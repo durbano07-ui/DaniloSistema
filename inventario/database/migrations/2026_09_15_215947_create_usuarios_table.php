@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('usuarios', function (Blueprint $table) {
             $table->string('numero_cedula', 10)->primary();
             $table->string('nombre', 30);
-            $table->foreignId('id_rol')->constraine('roles', 'id_rol');
+            $table->foreignId('id_rol')->constrained('roles','id_rol');
+            $table->string('password');
             $table->string('url_firma', 300)->nullable();
             $table->timestamps();
         });

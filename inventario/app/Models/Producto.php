@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\ProductoObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy(ProductoObserver::class)]
 class Producto extends Model
 {
     protected $table = 'productos';
@@ -12,9 +15,20 @@ class Producto extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'numero_serie', 'nombre', 'precio', 'url_img', 'estado',
-        'numero_cedula', 'id_proveedor', 'id_cat', 'id_almacen',
+        'numero_serie', 'nombre', 'precio', 'url_img', 'estado', 'condicion',
+        'numero_cedula', 'id_proveedor', 'id_cat', 'id_marca', 'id_modelo', 'id_almacen',
+        'tipo', 'cantidad', 'cantidad_disponible',
     ];
+
+    public function marca()
+    {
+        return $this->belongsTo(Marca::class, 'id_marca', 'id_marca');
+    }
+
+    public function modelo()
+    {
+        return $this->belongsTo(Modelo::class, 'id_modelo', 'id_modelo');
+    }
 
     public function usuario()
     {

@@ -15,4 +15,14 @@ class Categoria extends Model
     {
         return $this->hasMany(Producto::class, 'id_cat', 'id_cat');
     }
+
+    public function marcas()
+    {
+        return $this->hasMany(Marca::class, 'id_cat', 'id_cat');
+    }
+
+    public function modelos()
+    {
+        return $this->hasMany(Modelo::class, 'id_cat', 'id_cat');
+    }
 }

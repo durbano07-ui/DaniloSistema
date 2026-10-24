@@ -1,0 +1,4 @@
+despliegue/
+*.zip
+*.tar.gz
+*.sql

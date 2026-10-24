@@ -30,4 +30,9 @@ class Reporte extends Model
     {
         return $this->morphedByMany(Almacen::class, 'reportable', 'reportables', 'id_reporte', 'reportable_id');
     }
+
+    public function consumos()
+    {
+        return $this->morphedByMany(Consumo::class, 'reportable', 'reportables', 'id_reporte', 'reportable_id');
+    }
 }

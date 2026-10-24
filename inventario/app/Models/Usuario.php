@@ -14,12 +14,13 @@ class Usuario extends Authenticatable
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['numero_cedula', 'nombre', 'id_rol', 'password', 'url_firma'];
+    protected $fillable = ['numero_cedula', 'nombre', 'id_rol', 'password', 'url_firma', 'estado'];
 
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'remember_token'];
 
     protected $casts = [
         'password' => 'hashed',
+        'estado' => 'boolean',
     ];
 
     public function rol()
@@ -60,5 +61,18 @@ class Usuario extends Authenticatable
     public function telefonos()
     {
         return $this->morphMany(Telf::class, 'telefonable');
+    }
+
+    public function tieneRol(string $nombreRol): bool
+    {
+        return $this->rol?->nombre === $nombreRol;
+    }
+
+    /**
+     * Accesor para compatibilidad con componentes que esperan $user->name
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->nombre;
     }
 }
