@@ -1,0 +1,10 @@
+---
+deployment:
+  tasks:
+    - export APP=/home/hostinge2/repositories/DaniloSistema/inventario
+    - export PHP=/opt/cpanel/ea-php84/root/usr/bin/php
+    - export COMPOSER_BIN=/home/hostinge2/bin/composer
+    - cd $APP && $PHP $COMPOSER_BIN install --no-dev --optimize-autoloader --no-interaction
+    - cd $APP && $PHP artisan migrate --force
+    - cd $APP && $PHP artisan optimize:clear
+    - cd $APP && $PHP artisan optimize
