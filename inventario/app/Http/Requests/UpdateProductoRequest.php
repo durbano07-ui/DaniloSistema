@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -18,7 +19,7 @@ class UpdateProductoRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -34,6 +35,7 @@ class UpdateProductoRequest extends FormRequest
             'id_proveedor' => ['required', 'exists:proveedores,id_prov'],
             'url_img' => ['nullable', 'string', 'max:255'],
             'tipo' => ['nullable', 'string', 'in:unitario,lote'],
+            'unidad' => ['nullable', 'string', 'in:unidades,metros'],
             'cantidad' => ['nullable', 'integer', 'min:1'],
             'cantidad_disponible' => ['nullable', 'integer', 'min:0'],
         ];

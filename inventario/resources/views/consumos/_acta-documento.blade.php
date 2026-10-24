@@ -77,7 +77,7 @@
             @foreach ($lineas as $linea)
                 <tr>
                     <td>{{ $linea['descripcion'] }}</td>
-                    <td class="centro">{{ $linea['cantidad'] }}</td>
+                    <td class="centro">{{ $linea['cantidad'] }}{{ ($linea['unidad'] ?? null) === 'metros' ? ' m' : '' }}</td>
                     <td class="num">{{ $dinero($linea['precio']) }}</td>
                     <td class="num">{{ $dinero($linea['total']) }}</td>
                 </tr>

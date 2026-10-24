@@ -158,7 +158,7 @@
                                     <span class="block text-sm font-semibold text-[#1E293B]" x-text="p.nombre"></span>
                                     <span class="block text-[11px] font-mono text-[#94A3B8]" x-text="p.numero_serie"></span>
                                 </span>
-                                <span class="text-[11px] text-[#64748B] whitespace-nowrap" x-text="(p.categoria ?? '') + (p.tipo === 'lote' ? ' · ' + p.disponible + ' disp.' : '')"></span>
+                                <span class="text-[11px] text-[#64748B] whitespace-nowrap" x-text="(p.categoria ?? '') + (p.tipo === 'lote' ? ' · ' + p.disponible + (p.unidad === 'metros' ? ' m' : '') + ' disp.' : '')"></span>
                             </button>
                         </template>
                     </div>
@@ -196,6 +196,9 @@
                                                x-model.number="item.cantidad"
                                                @change="if (item.cantidad < 1) item.cantidad = 1; if (item.cantidad > item.disponible) item.cantidad = item.disponible"
                                                class="w-20 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] px-2.5 py-1.5 text-sm text-right font-mono focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" />
+                                    </template>
+                                    <template x-if="item.unidad === 'metros'">
+                                        <span class="text-[11px] font-semibold text-[#64748B] pl-1">m</span>
                                     </template>
                                     <template x-if="item.tipo !== 'lote'">
                                         <span>

@@ -120,10 +120,10 @@
                          if (item.cantidad < item.cantidad_disponible) {
                              item.cantidad++;
                              window.playScannerBeep('success');
-                             this.scanSuccess = `Se incrementó la cantidad del lote ${item.nombre}: ${item.cantidad} unidades.`;
+                             this.scanSuccess = `Se incrementó la cantidad del lote ${item.nombre}: ${item.cantidad} ${this.etiquetaUnidad(item)}.`;
                          } else {
                              window.playScannerBeep('error');
-                             this.scanError = `El lote '${item.nombre}' ya tiene asignado todo el stock disponible (${item.cantidad_disponible} unidades).`;
+                             this.scanError = `El lote '${item.nombre}' ya tiene asignado todo el stock disponible (${item.cantidad_disponible} ${this.etiquetaUnidad(item)}).`;
                          }
                      } else {
                          window.playScannerBeep('error');
@@ -143,6 +143,7 @@
                      almacen: prod.almacen,
                      tipo: prod.tipo || 'unitario',
                      cantidad_disponible: parseInt(prod.cantidad_disponible) || 1,
+                     unidad: (prod.tipo === 'lote' && prod.unidad === 'metros') ? 'metros' : 'unidades',
                      cantidad: 1
                  });
 
@@ -160,8 +161,20 @@
                      this.focusScanner();
                  }
              },
+             etiquetaUnidad(item) {
+                 return item.unidad === 'metros' ? 'm' : 'unidades';
+             },
              get totalUnidades() {
-                 return this.items.reduce((acc, item) => acc + (parseInt(item.cantidad) || 1), 0);
+                 return this.items.filter(i => i.unidad !== 'metros').reduce((acc, item) => acc + (parseInt(item.cantidad) || 1), 0);
+             },
+             get totalMetros() {
+                 return this.items.filter(i => i.unidad === 'metros').reduce((acc, item) => acc + (parseInt(item.cantidad) || 0), 0);
+             },
+             get resumenCantidades() {
+                 const partes = [];
+                 if (this.totalUnidades > 0) partes.push(this.totalUnidades + (this.totalUnidades === 1 ? ' unidad' : ' unidades'));
+                 if (this.totalMetros > 0) partes.push(this.totalMetros + ' m');
+                 return partes.join(' + ');
              },
              toggleCamera() {
                  if (this.isScanningCamera) {
@@ -337,7 +350,7 @@
                 <option value="">-- Elige un equipo para añadirlo a la tabla del pedido --</option>
                 @foreach ($productosDisponibles as $prod)
                     <option value="{{ $prod->numero_serie }}">
-                        [{{ $prod->numero_serie }}] {{ $prod->nombre }} &bull; {{ $prod->marca?->nombre ?? '' }} {{ $prod->modelo?->nombre ?? '' }} &bull; {{ ($prod->tipo ?? 'unitario') === 'lote' ? 'Lote (' . $prod->cantidad_disponible . ' disp.)' : '1 unidad' }} &bull; Bodega: {{ $prod->almacen?->nombre }}
+                        [{{ $prod->numero_serie }}] {{ $prod->nombre }} &bull; {{ $prod->marca?->nombre ?? '' }} {{ $prod->modelo?->nombre ?? '' }} &bull; {{ ($prod->tipo ?? 'unitario') === 'lote' ? 'Lote (' . $prod->cantidad_disponible . ($prod->esMetros() ? ' m' : '') . ' disp.)' : '1 unidad' }} &bull; Bodega: {{ $prod->almacen?->nombre }}
                     </option>
                 @endforeach
             </select>
@@ -379,7 +392,7 @@
                             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                             <span x-text="items.length + (items.length === 1 ? ' producto' : ' productos')"></span>
                             <span>&bull;</span>
-                            <span x-text="totalUnidades + (totalUnidades === 1 ? ' unidad' : ' unidades')"></span>
+                            <span x-text="resumenCantidades"></span>
                         </span>
 
                         <button type="button"
@@ -429,7 +442,7 @@
                                             <div class="mt-0.5">
                                                 <template x-if="item.tipo === 'lote'">
                                                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
-                                                        Lote (<span x-text="item.cantidad_disponible"></span> disp.)
+                                                        Lote (<span x-text="item.cantidad_disponible + (item.unidad === 'metros' ? ' m' : '')"></span> disp.)
                                                     </span>
                                                 </template>
                                                 <template x-if="item.tipo !== 'lote'">
@@ -484,7 +497,7 @@
                                                             class="w-6 h-6 rounded-lg bg-white text-[#64748B] hover:text-[#1E293B] hover:bg-[#E2E8F0] flex items-center justify-center font-bold text-xs border border-[#E2E8F0] cursor-pointer">
                                                         +
                                                     </button>
-                                                    <span class="text-[10px] text-[#64748B] px-1 font-semibold">unids.</span>
+                                                    <span class="text-[10px] text-[#64748B] px-1 font-semibold" x-text="item.unidad === 'metros' ? 'm' : 'unids.'"></span>
                                                 </div>
                                             </template>
                                             <template x-if="item.tipo !== 'lote'">
@@ -511,10 +524,10 @@
                             <tfoot class="bg-[#F8FAFC] border-t border-[#E2E8F0] font-bold text-xs text-[#1E293B]">
                                 <tr>
                                     <td colspan="4" class="py-3 px-4 text-right text-[#64748B] uppercase text-[10px] tracking-wider">
-                                        Total de Unidades a Despachar:
+                                        Total a Despachar:
                                     </td>
                                     <td class="py-3 px-4 text-center font-mono text-[#2563EB] text-sm">
-                                        <span x-text="totalUnidades"></span> unids.
+                                        <span x-text="resumenCantidades"></span>
                                     </td>
                                     <td></td>
                                 </tr>

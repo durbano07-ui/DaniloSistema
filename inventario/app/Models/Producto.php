@@ -2,23 +2,43 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Observers\ProductoObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Model;
 
 #[ObservedBy(ProductoObserver::class)]
 class Producto extends Model
 {
     protected $table = 'productos';
+
     protected $primaryKey = 'numero_serie';
+
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $fillable = [
         'numero_serie', 'nombre', 'precio', 'url_img', 'estado', 'condicion',
         'numero_cedula', 'id_proveedor', 'id_cat', 'id_marca', 'id_modelo', 'id_almacen',
-        'tipo', 'cantidad', 'cantidad_disponible',
+        'tipo', 'cantidad', 'cantidad_disponible', 'unidad',
     ];
+
+    public function esMetros(): bool
+    {
+        return $this->tipo === 'lote' && $this->unidad === 'metros';
+    }
+
+    /**
+     * Cantidad con su unidad de medida: "25 m", "1 unidad", "3 unidades".
+     */
+    public static function formatearCantidad(int $cantidad, ?string $unidad = 'unidades'): string
+    {
+        if ($unidad === 'metros') {
+            return "{$cantidad} m";
+        }
+
+        return $cantidad.' '.($cantidad === 1 ? 'unidad' : 'unidades');
+    }
 
     public function marca()
     {

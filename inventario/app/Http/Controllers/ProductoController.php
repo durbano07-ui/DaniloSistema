@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Producto;
-use App\Models\Categoria;
-use App\Models\Almacen;
-use App\Models\Proveedor;
-use App\Models\Consumo;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
+use App\Models\Almacen;
+use App\Models\Categoria;
+use App\Models\Consumo;
+use App\Models\Producto;
+use App\Models\Proveedor;
+use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 
 class ProductoController extends Controller
 {
@@ -27,7 +28,7 @@ class ProductoController extends Controller
             $buscar = trim($request->buscar);
             $query->where(function ($q) use ($buscar) {
                 $q->where('numero_serie', 'like', "%{$buscar}%")
-                  ->orWhere('nombre', 'like', "%{$buscar}%");
+                    ->orWhere('nombre', 'like', "%{$buscar}%");
             });
         }
 
@@ -82,14 +83,16 @@ class ProductoController extends Controller
             $cant = max(1, (int) ($data['cantidad'] ?? 1));
             $data['cantidad'] = $cant;
             $data['cantidad_disponible'] = $cant;
+            $data['unidad'] = $data['unidad'] ?? 'unidades';
         } else {
             $data['cantidad'] = 1;
             $data['cantidad_disponible'] = 1;
+            $data['unidad'] = 'unidades';
         }
 
         Producto::create($data);
 
-        return redirect()->route('productos.index')->with('status', ($data['tipo'] === 'lote' ? "Lote de {$data['cantidad']} unidades registrado exitosamente en el inventario." : 'Producto registrado exitosamente en el inventario.'));
+        return redirect()->route('productos.index')->with('status', ($data['tipo'] === 'lote' ? 'Lote de '.Producto::formatearCantidad($data['cantidad'], $data['unidad']).' registrado exitosamente en el inventario.' : 'Producto registrado exitosamente en el inventario.'));
     }
 
     /**
@@ -111,7 +114,7 @@ class ProductoController extends Controller
     public function update(UpdateProductoRequest $request, Producto $producto): RedirectResponse
     {
         $data = $request->validated();
-        if (!isset($data['precio'])) {
+        if (! isset($data['precio'])) {
             $data['precio'] = $producto->precio ?? 0;
         }
 
@@ -144,7 +147,7 @@ class ProductoController extends Controller
             ->where('numero_serie', $serie)
             ->first();
 
-        if (!$producto) {
+        if (! $producto) {
             return response()->json([
                 'encontrado' => false,
                 'mensaje' => "El código o serie '{$serie}' no está registrado en el inventario.",
@@ -166,6 +169,7 @@ class ProductoController extends Controller
                 'tipo' => $producto->tipo ?? 'unitario',
                 'cantidad' => (int) ($producto->cantidad ?? 1),
                 'cantidad_disponible' => (int) ($producto->cantidad_disponible ?? 1),
+                'unidad' => $producto->unidad ?? 'unidades',
                 'precio' => number_format((float) $producto->precio, 2),
                 'categoria' => $producto->categoria?->nombre ?? 'Sin categoría',
                 'id_cat' => $producto->id_cat,
@@ -178,7 +182,7 @@ class ProductoController extends Controller
             ],
             'ultimo_consumo' => $ultimoConsumo ? [
                 'id_consumo' => $ultimoConsumo->id_consumo,
-                'fecha' => \Carbon\Carbon::parse($ultimoConsumo->fecha)->format('d/m/Y'),
+                'fecha' => Carbon::parse($ultimoConsumo->fecha)->format('d/m/Y'),
                 'motivo' => $ultimoConsumo->motivo,
                 'tecnico' => $ultimoConsumo->usuario?->nombre,
                 'cedula' => $ultimoConsumo->numero_cedula,
@@ -208,7 +212,7 @@ class ProductoController extends Controller
 
         return response()->json([
             'existe' => false,
-            'mensaje' => "Serie libre y lista para registrar.",
+            'mensaje' => 'Serie libre y lista para registrar.',
         ]);
     }
 }

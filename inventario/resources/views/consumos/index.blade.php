@@ -154,8 +154,8 @@
                                     <!-- Equipos -->
                                     <td class="py-4 px-6 whitespace-nowrap text-xs text-[#1E293B] font-semibold">
                                         {{ $orden->consumos_count }} {{ $orden->consumos_count === 1 ? 'equipo' : 'equipos' }}
-                                        @if ((int) $orden->consumos_sum_cantidad !== $orden->consumos_count)
-                                            <span class="text-[#64748B] font-normal">· {{ (int) $orden->consumos_sum_cantidad }} unidades</span>
+                                        @if ((int) $orden->consumos_sum_cantidad !== $orden->consumos_count || $orden->consumos->contains(fn ($c) => $c->producto?->esMetros()))
+                                            <span class="text-[#64748B] font-normal">· {{ $orden->resumenCantidades() }}</span>
                                         @endif
                                     </td>
 
@@ -277,7 +277,7 @@
                                             {{ $c->producto?->categoria?->nombre ?? 'Sin categoría' }}
                                         </td>
                                         <td class="py-3 px-4 text-right font-mono text-[#1E293B]">
-                                            {{ $c->cantidad ?? 1 }}
+                                            {{ $c->cantidad ?? 1 }}{{ $c->producto?->esMetros() ? ' m' : '' }}
                                         </td>
                                         @can('registrar-consumo')
                                             <td class="py-3 px-6 text-right whitespace-nowrap">
@@ -343,7 +343,7 @@
                     <div class="flex items-center justify-between gap-4 px-6 py-4 border-t border-[#E2E8F0] bg-[#F8FAFC]">
                         <span class="text-xs text-[#64748B]">
                             {{ $orden->consumos_count }} {{ $orden->consumos_count === 1 ? 'equipo' : 'equipos' }}
-                            &middot; {{ (int) $orden->consumos_sum_cantidad }} unidades
+                            &middot; {{ $orden->resumenCantidades() }}
                         </span>
                         <a href="{{ $orden->esFactura() ? route('consumos.acta', $orden) : route('consumos.orden', $orden) }}"
                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold shadow-sm transition-all">

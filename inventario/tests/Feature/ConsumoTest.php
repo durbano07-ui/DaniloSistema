@@ -2,28 +2,30 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\Usuario;
-use App\Models\Producto;
-use App\Models\Categoria;
 use App\Models\Almacen;
-use App\Models\Proveedor;
+use App\Models\Categoria;
 use App\Models\Consumo;
+use App\Models\Producto;
+use App\Models\Proveedor;
+use App\Models\Usuario;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ConsumoTest extends TestCase
 {
     use DatabaseTransactions;
 
     protected ?Usuario $tecnico = null;
+
     protected ?Usuario $admin = null;
+
     protected ?Usuario $almacenista = null;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        if (!Usuario::where('numero_cedula', '0500000003')->exists()) {
+        if (! Usuario::where('numero_cedula', '0500000003')->exists()) {
             $this->seed();
         }
 
@@ -175,7 +177,7 @@ class ConsumoTest extends TestCase
     public function test_tecnico_puede_ver_comprobante_de_retiro(): void
     {
         $consumo = Consumo::with('producto')->first();
-        if (!$consumo) {
+        if (! $consumo) {
             $prod = Producto::where('estado', 'disponible')->first();
             $consumo = Consumo::create([
                 'fecha' => '2026-09-30',
@@ -224,7 +226,7 @@ class ConsumoTest extends TestCase
             'producto' => [
                 'numero_serie' => 'SCAN-TEST-001',
                 'nombre' => 'Módem Óptico GPON',
-            ]
+            ],
         ]);
     }
 
@@ -298,6 +300,66 @@ class ConsumoTest extends TestCase
 
         $categoria->refresh();
         $this->assertEquals($stockOriginal, $categoria->stock);
+    }
+
+    public function test_lote_de_cable_en_metros_se_registra_y_retira_por_metros(): void
+    {
+        $categoria = Categoria::first();
+        $almacen = Almacen::first();
+        $proveedor = Proveedor::first();
+
+        // 1. Ingreso de una bobina de 500 m de cable
+        $this->actingAs($this->almacenista)->post(route('productos.store'), [
+            'numero_serie' => 'BOB-DROP-500',
+            'nombre' => 'Cable Drop Fibra Óptica 1 Hilo',
+            'condicion' => 'nuevo',
+            'tipo' => 'lote',
+            'unidad' => 'metros',
+            'cantidad' => 500,
+            'id_cat' => $categoria->id_cat,
+            'id_almacen' => $almacen->id_almacen,
+            'id_proveedor' => $proveedor->id_prov,
+        ])->assertRedirect(route('productos.index'));
+
+        $producto = Producto::findOrFail('BOB-DROP-500');
+        $this->assertEquals('metros', $producto->unidad);
+        $this->assertEquals(500, $producto->cantidad_disponible);
+
+        // 2. Retiro de 120 m para una instalación
+        $this->actingAs($this->tecnico)->post(route('consumos.store'), [
+            'numero_serie' => 'BOB-DROP-500',
+            'fecha' => '2026-10-24',
+            'motivo' => 'Acometida cliente #202',
+            'cantidad' => 120,
+        ]);
+
+        $producto->refresh();
+        $this->assertEquals(380, $producto->cantidad_disponible);
+        $this->assertEquals('disponible', $producto->estado);
+
+        // 3. El inventario y el comprobante muestran metros, no unidades
+        $this->actingAs($this->almacenista)->get(route('productos.index', ['buscar' => 'BOB-DROP-500']))
+            ->assertSee('Lote: 380 m');
+
+        $consumo = Consumo::where('numero_serie', 'BOB-DROP-500')->firstOrFail();
+        $this->actingAs($this->tecnico)->get(route('consumos.show', $consumo))
+            ->assertSee('120 m de Cable Drop');
+    }
+
+    public function test_equipo_individual_siempre_se_registra_en_unidades(): void
+    {
+        $this->actingAs($this->almacenista)->post(route('productos.store'), [
+            'numero_serie' => 'ONT-UNIT-001',
+            'nombre' => 'ONT Huawei',
+            'condicion' => 'nuevo',
+            'tipo' => 'unitario',
+            'unidad' => 'metros',
+            'id_cat' => Categoria::first()->id_cat,
+            'id_almacen' => Almacen::first()->id_almacen,
+            'id_proveedor' => Proveedor::first()->id_prov,
+        ]);
+
+        $this->assertEquals('unidades', Producto::findOrFail('ONT-UNIT-001')->unidad);
     }
 
     public function test_filtro_por_tipo_en_vista_de_inventario(): void

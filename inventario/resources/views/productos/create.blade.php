@@ -18,6 +18,7 @@
 
              tipo: '{{ old('tipo', 'unitario') }}',
              cantidad: {{ old('cantidad', 1) }},
+             unidad: '{{ old('unidad', 'unidades') === 'metros' ? 'metros' : 'unidades' }}',
              serie: '{{ old('numero_serie') }}',
              isChecking: false,
              checkStatus: null,
@@ -374,7 +375,7 @@
                         <label for="cantidad_lote" class="block text-xs font-bold uppercase tracking-wider text-[#2563EB]">
                             Cantidad Inicial del Lote <span class="text-rose-500">*</span>
                         </label>
-                        <p class="text-[11px] text-[#64748B]">Número de unidades físicas contenidas en el lote.</p>
+                        <p class="text-[11px] text-[#64748B]" x-text="unidad === 'metros' ? 'Metros totales del rollo o bobina (p. ej. cable).' : 'Número de unidades físicas contenidas en el lote.'"></p>
                     </div>
                     <div class="flex items-center gap-2">
                         <input type="number"
@@ -384,7 +385,14 @@
                                min="1"
                                max="100000"
                                class="w-32 rounded-xl bg-white border border-[#E2E8F0] text-[#1E293B] text-center font-mono font-bold text-base py-2 px-3 focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]" />
-                        <span class="text-xs font-bold text-[#64748B]">unidades</span>
+                        <select name="unidad"
+                                x-model="unidad"
+                                :disabled="tipo !== 'lote'"
+                                aria-label="Unidad de medida del lote"
+                                class="rounded-xl bg-white border border-[#E2E8F0] text-[#1E293B] text-xs font-bold py-2 pl-3 pr-8 focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] cursor-pointer">
+                            <option value="unidades">unidades</option>
+                            <option value="metros">metros</option>
+                        </select>
                     </div>
                 </div>
 
@@ -707,7 +715,7 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <span>Modalidad:</span>
-                        <span class="font-semibold text-[#1E293B]" x-text="tipo === 'lote' ? ('Lote (' + cantidad + ' unidades)') : 'Equipo Individual (1 unidad)'"></span>
+                        <span class="font-semibold text-[#1E293B]" x-text="tipo === 'lote' ? ('Lote (' + cantidad + (unidad === 'metros' ? ' m' : ' unidades') + ')') : 'Equipo Individual (1 unidad)'"></span>
                     </div>
                 </div>
 

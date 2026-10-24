@@ -222,7 +222,7 @@
                                             <span class="font-bold text-[#1E293B] block">{{ $c->producto?->nombre ?? 'Equipo' }}</span>
                                             <span class="font-mono text-[11px] text-[#64748B]">SN: {{ $c->numero_serie }}</span>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right font-mono">{{ $c->cantidad ?? 1 }}</td>
+                                        <td class="py-2.5 px-3 text-right font-mono">{{ $c->cantidad ?? 1 }}{{ $c->producto?->esMetros() ? ' m' : '' }}</td>
                                         <td class="py-2.5 px-3 text-right font-mono">{{ number_format((float) $c->precio_unitario, 2) }}</td>
                                         <td class="py-2.5 px-3 text-right font-mono">{{ number_format((int) ($c->cantidad ?? 1) * (float) $c->precio_unitario, 2) }}</td>
                                     </tr>

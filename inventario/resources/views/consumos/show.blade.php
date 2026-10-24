@@ -169,7 +169,7 @@
                 </div>
                 <div class="space-y-1">
                     <div class="flex justify-between font-bold text-[12px]">
-                        <span>{{ $consumo->cantidad ?? 1 }}x {{ $consumo->producto?->nombre ?? 'Equipo' }}</span>
+                        <span>{{ $consumo->producto?->esMetros() ? ($consumo->cantidad . ' m de') : (($consumo->cantidad ?? 1) . 'x') }} {{ $consumo->producto?->nombre ?? 'Equipo' }}</span>
                         <span class="text-[#2563EB] text-[10px] font-bold">[SALIDA]</span>
                     </div>
                     <div class="text-[10px] text-[#64748B]">

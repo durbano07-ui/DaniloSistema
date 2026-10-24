@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use App\Models\Consumo;
+use App\Models\Producto;
 use App\Models\Reporte;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -28,12 +30,12 @@ class ReporteExport
 
     public function codigo(): string
     {
-        return 'REP-' . str_pad($this->reporte->id_reporte, 4, '0', STR_PAD_LEFT);
+        return 'REP-'.str_pad($this->reporte->id_reporte, 4, '0', STR_PAD_LEFT);
     }
 
     public function nombreArchivo(string $extension): string
     {
-        return $this->codigo() . '-' . str($this->reporte->tipo)->slug() . '.' . $extension;
+        return $this->codigo().'-'.str($this->reporte->tipo)->slug().'.'.$extension;
     }
 
     public const COLUMNAS_ACTA_SALIDAS = ['No.', 'Fecha', 'Descripción', 'Cant.', 'Observaciones', 'Notas', 'Quien recibe', 'Firma', 'Quien entrega', 'Firma'];
@@ -54,7 +56,7 @@ class ReporteExport
      */
     public static function actaSalidas(string $desde, string $hasta): Collection
     {
-        return \App\Models\Consumo::with(['producto', 'usuario', 'reportes.usuario', 'notas'])
+        return Consumo::with(['producto', 'usuario', 'reportes.usuario', 'notas'])
             ->whereHas('orden', fn ($q) => $q->where('tipo', 'normal'))
             ->whereDate('fecha', '>=', $desde)
             ->whereDate('fecha', '<=', $hasta)
@@ -65,18 +67,30 @@ class ReporteExport
             ->map(fn ($c, $i) => [
                 $i + 1,
                 Carbon::parse($c->fecha)->format('d/m/Y'),
-                $c->producto?->nombre ?? 'Equipo',
+                self::nombreConUnidad($c->producto),
                 (int) ($c->cantidad ?? 1),
                 $c->motivo,
                 // Notas de seguimiento, de la más antigua a la más reciente
                 $c->notas->sortBy('id_nota')
-                    ->map(fn ($n) => $n->created_at->format('d/m/Y') . ': ' . $n->texto)
+                    ->map(fn ($n) => $n->created_at->format('d/m/Y').': '.$n->texto)
                     ->implode("\n"),
                 $c->usuario?->nombre ?? $c->numero_cedula,
                 '',
                 $c->reportes->first()?->usuario?->nombre ?? '',
                 '',
             ]);
+    }
+
+    /**
+     * Nombre del producto indicando "(m)" cuando el lote se mide en metros.
+     */
+    public static function nombreConUnidad(?Producto $producto): string
+    {
+        if (! $producto) {
+            return 'Equipo';
+        }
+
+        return $producto->esMetros() ? "{$producto->nombre} (m)" : $producto->nombre;
     }
 
     public const COLUMNAS_EXISTENCIAS = ['Descripción / Equipo', 'Categoría', 'Marca', 'Modelo', 'Ubicación', 'Stock en Bodega'];
@@ -88,7 +102,7 @@ class ReporteExport
      */
     public static function existenciasActuales(): Collection
     {
-        return \App\Models\Producto::with(['categoria', 'marca', 'modelo', 'almacen'])
+        return Producto::with(['categoria', 'marca', 'modelo', 'almacen'])
             ->where('estado', 'disponible')
             ->get()
             ->groupBy(fn ($p) => implode('|', [$p->nombre, $p->id_cat, $p->id_marca, $p->id_modelo, $p->id_almacen]))
@@ -96,7 +110,7 @@ class ReporteExport
                 $p = $grupo->first();
 
                 return [
-                    $p->nombre,
+                    self::nombreConUnidad($p),
                     $p->categoria?->nombre ?? '—',
                     $p->marca?->nombre ?? '—',
                     $p->modelo?->nombre ?? '—',
@@ -115,9 +129,9 @@ class ReporteExport
     public static function existencias(Collection $productos): Collection
     {
         return $productos
-            ->groupBy(fn ($prod) => $prod->nombre . '|' . $prod->id_modelo . '|' . $prod->id_cat)
+            ->groupBy(fn ($prod) => $prod->nombre.'|'.$prod->id_modelo.'|'.$prod->id_cat)
             ->map(fn ($grupo) => [
-                'nombre' => $grupo->first()->nombre,
+                'nombre' => self::nombreConUnidad($grupo->first()),
                 'modelo' => $grupo->first()->modelo?->nombre,
                 'categoria' => $grupo->first()->categoria?->nombre,
                 'stock' => $grupo->sum(fn ($prod) => $prod->estado !== 'disponible'
@@ -146,9 +160,9 @@ class ReporteExport
                 'titulo' => null,
                 'encabezados' => ['Vale', 'Fecha', 'Equipo', 'Serie', 'Técnico', 'Cédula', 'Bodega', 'Motivo'],
                 'filas' => $r->consumos->map(fn ($c) => [
-                    'CNS-' . str_pad($c->id_consumo, 4, '0', STR_PAD_LEFT),
+                    'CNS-'.str_pad($c->id_consumo, 4, '0', STR_PAD_LEFT),
                     Carbon::parse($c->fecha)->format('d/m/Y'),
-                    $c->producto?->nombre ?? 'Equipo',
+                    self::nombreConUnidad($c->producto),
                     $c->numero_serie,
                     $c->usuario?->nombre ?? 'N/A',
                     $c->numero_cedula,
@@ -163,7 +177,7 @@ class ReporteExport
                 'filas' => $r->consumos->map(fn ($c) => [
                     $c->orden?->factura ?? '—',
                     Carbon::parse($c->fecha)->format('d/m/Y'),
-                    $c->producto?->nombre ?? 'Equipo',
+                    self::nombreConUnidad($c->producto),
                     $c->numero_serie,
                     (int) ($c->cantidad ?? 1),
                     round((float) $c->precio_unitario, 2),

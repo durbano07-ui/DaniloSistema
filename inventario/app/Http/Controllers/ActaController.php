@@ -75,6 +75,7 @@ class ActaController extends Controller
             'categoria' => $p->categoria?->nombre,
             'tipo' => $p->tipo ?? 'unitario',
             'disponible' => ($p->tipo ?? 'unitario') === 'lote' ? (int) $p->cantidad_disponible : 1,
+            'unidad' => $p->esMetros() ? 'metros' : 'unidades',
         ];
     }
 
@@ -103,7 +104,7 @@ class ActaController extends Controller
             [
                 'tipo' => 'factura',
                 'fecha' => $validated['fecha'],
-                'motivo' => 'Acta de entrega — ' . $formato['destino'],
+                'motivo' => 'Acta de entrega — '.$formato['destino'],
                 'factura' => self::siguienteFactura(),
                 'nota' => $validated['nota'] ?? null,
                 'iva' => $formato['iva'],
@@ -142,9 +143,9 @@ class ActaController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        $nombre = 'Acta-ORD-' . str_pad($orden->id_orden, 4, '0', STR_PAD_LEFT) . '.pdf';
+        $nombre = 'Acta-ORD-'.str_pad($orden->id_orden, 4, '0', STR_PAD_LEFT).'.pdf';
 
-        return response()->streamDownload(fn () => print($dompdf->output()), $nombre, [
+        return response()->streamDownload(fn () => print ($dompdf->output()), $nombre, [
             'Content-Type' => 'application/pdf',
         ]);
     }
@@ -191,7 +192,7 @@ class ActaController extends Controller
             ->latest('id_orden')
             ->value('factura');
 
-        $secuencial = $ultima ? ((int) preg_replace('/\D/', '', substr(strrchr('-' . $ultima, '-'), 1))) + 1 : 1;
+        $secuencial = $ultima ? ((int) preg_replace('/\D/', '', substr(strrchr('-'.$ultima, '-'), 1))) + 1 : 1;
 
         return sprintf('%03d', $secuencial);
     }
@@ -214,8 +215,9 @@ class ActaController extends Controller
         $iva = (float) ($orden->iva ?? 0);
 
         $lineas = $orden->consumos->map(fn ($c) => [
-            'descripcion' => ($c->producto?->nombre ?? 'Equipo') . ' — S/N: ' . $c->numero_serie,
+            'descripcion' => ($c->producto?->nombre ?? 'Equipo').' — S/N: '.$c->numero_serie,
             'cantidad' => (int) ($c->cantidad ?? 1),
+            'unidad' => $c->producto?->esMetros() ? 'metros' : 'unidades',
             'precio' => (float) ($c->precio_unitario ?? 0),
             'total' => round((int) ($c->cantidad ?? 1) * (float) ($c->precio_unitario ?? 0), 2),
         ]);

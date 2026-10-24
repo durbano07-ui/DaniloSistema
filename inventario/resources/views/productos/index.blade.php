@@ -6,9 +6,9 @@
     <div class="space-y-6"
          x-data="{
              labelModalOpen: false,
-             activeLabel: { serie: '', nombre: '', categoria: '', almacen: '', tipo: 'unitario', cantidad: 1 },
-             showLabel(serie, nombre, categoria, almacen, tipo = 'unitario', cantidad = 1) {
-                 this.activeLabel = { serie, nombre, categoria, almacen, tipo, cantidad };
+             activeLabel: { serie: '', nombre: '', categoria: '', almacen: '', tipo: 'unitario', cantidad: 1, unidad: 'unidades' },
+             showLabel(serie, nombre, categoria, almacen, tipo = 'unitario', cantidad = 1, unidad = 'unidades') {
+                 this.activeLabel = { serie, nombre, categoria, almacen, tipo, cantidad, unidad };
                  this.labelModalOpen = true;
                  this.$nextTick(() => {
                      if (window.JsBarcode && this.$refs.printLabelSvg) {
@@ -174,8 +174,8 @@
                                         <p class="font-semibold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">{{ $producto->nombre }}</p>
                                         @if(($producto->tipo ?? 'unitario') === 'lote')
                                             <span class="inline-flex items-center gap-1 mt-1 text-[11px] font-semibold text-[#2563EB] bg-[#EFF6FF] px-2 py-0.5 rounded-md border border-[#BFDBFE]/60"
-                                                  title="Lote con {{ $producto->cantidad_disponible }} unidades disponibles de {{ $producto->cantidad }} iniciales">
-                                                <span>Lote: {{ $producto->cantidad_disponible }} unids.</span>
+                                                  title="Lote con {{ \App\Models\Producto::formatearCantidad((int) $producto->cantidad_disponible, $producto->unidad) }} disponibles de {{ $producto->cantidad }} iniciales">
+                                                <span>Lote: {{ $producto->cantidad_disponible }} {{ $producto->esMetros() ? 'm' : 'unids.' }}</span>
                                                 <span class="text-[10px] text-[#64748B] font-mono">/ {{ $producto->cantidad }}</span>
                                             </span>
                                         @endif
@@ -223,7 +223,7 @@
                                         <div class="flex items-center justify-end gap-1.5">
                                             <!-- Imprimir Etiqueta -->
                                             <button type="button"
-                                                    @click="showLabel('{{ $producto->numero_serie }}', '{{ addslashes($producto->nombre) }}', '{{ $producto->categoria?->nombre ?? 'General' }}', '{{ $producto->almacen?->nombre ?? 'N/A' }}', '{{ $producto->tipo ?? 'unitario' }}', {{ $producto->cantidad ?? 1 }})"
+                                                    @click="showLabel('{{ $producto->numero_serie }}', '{{ addslashes($producto->nombre) }}', '{{ $producto->categoria?->nombre ?? 'General' }}', '{{ $producto->almacen?->nombre ?? 'N/A' }}', '{{ $producto->tipo ?? 'unitario' }}', {{ $producto->cantidad ?? 1 }}, '{{ $producto->unidad ?? 'unidades' }}')"
                                                     class="p-2 rounded-xl text-[#64748B] hover:text-[#2563EB] hover:bg-[#F8FAFC] transition-colors"
                                                     title="Imprimir Etiqueta con Código de Barras">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -291,7 +291,7 @@
                         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE] my-0.5">
                             <span>LOTE:</span>
                             <span x-text="activeLabel.cantidad"></span>
-                            <span>UNIDADES</span>
+                            <span x-text="activeLabel.unidad === 'metros' ? 'METROS' : 'UNIDADES'"></span>
                         </div>
                     </template>
                     <div class="flex items-center justify-center py-1">

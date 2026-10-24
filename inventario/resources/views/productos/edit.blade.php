@@ -226,7 +226,19 @@
 
                     @if($producto->tipo === 'lote')
                         <!-- Ajuste de Cantidades del Lote -->
-                        <div class="sm:col-span-2 p-5 rounded-xl bg-[#F1F5F9]/60 border border-[#E2E8F0] grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2 p-5 rounded-xl bg-[#F1F5F9]/60 border border-[#E2E8F0] grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label for="unidad" class="block text-xs font-bold uppercase tracking-wider text-[#2563EB] mb-1">
+                                    Unidad de Medida
+                                </label>
+                                <select id="unidad"
+                                        name="unidad"
+                                        class="w-full rounded-xl bg-white border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] text-sm font-bold focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 cursor-pointer">
+                                    <option value="unidades" @selected(old('unidad', $producto->unidad) !== 'metros')>Unidades</option>
+                                    <option value="metros" @selected(old('unidad', $producto->unidad) === 'metros')>Metros (cable)</option>
+                                </select>
+                                <span class="text-[11px] text-[#64748B] mt-1 block">Cómo se cuenta este lote.</span>
+                            </div>
                             <div>
                                 <label for="cantidad" class="block text-xs font-bold uppercase tracking-wider text-[#2563EB] mb-1">
                                     Cantidad Inicial del Lote <span class="text-rose-500">*</span>
@@ -237,7 +249,7 @@
                                        value="{{ old('cantidad', $producto->cantidad) }}"
                                        min="1"
                                        class="w-full rounded-xl bg-white border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] font-mono text-sm font-bold focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" />
-                                <span class="text-[11px] text-[#64748B] mt-1 block">Total de unidades recibidas originalmente en este lote.</span>
+                                <span class="text-[11px] text-[#64748B] mt-1 block">Total recibido originalmente en este lote (unidades o metros).</span>
                             </div>
                             <div>
                                 <label for="cantidad_disponible" class="block text-xs font-bold uppercase tracking-wider text-[#2563EB] mb-1">
@@ -249,7 +261,7 @@
                                        value="{{ old('cantidad_disponible', $producto->cantidad_disponible) }}"
                                        min="0"
                                        class="w-full rounded-xl bg-white border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] font-mono text-sm font-bold focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" />
-                                <span class="text-[11px] text-[#64748B] mt-1 block">Unidades físicas reales disponibles para despacho.</span>
+                                <span class="text-[11px] text-[#64748B] mt-1 block">Cantidad real disponible para despacho (unidades o metros).</span>
                             </div>
                         </div>
                     @endif

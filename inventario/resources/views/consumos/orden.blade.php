@@ -102,14 +102,14 @@
                 <div class="divide-y divide-dotted divide-[#CBD5E1]">
                     @foreach ($orden->consumos as $c)
                         <div class="py-2 first:pt-0 last:pb-0">
-                            <div class="font-bold text-[12px]">{{ $c->cantidad ?? 1 }}x {{ $c->producto?->nombre ?? 'Equipo' }}</div>
+                            <div class="font-bold text-[12px]">{{ $c->producto?->esMetros() ? ($c->cantidad . ' m de') : (($c->cantidad ?? 1) . 'x') }} {{ $c->producto?->nombre ?? 'Equipo' }}</div>
                             <div class="text-[10px] text-[#64748B] mt-0.5">S/N: <span class="font-bold text-[#1E293B]">{{ $c->numero_serie }}</span></div>
                         </div>
                     @endforeach
                 </div>
                 <div class="mt-3 pt-2 border-t border-dotted border-[#CBD5E1] flex justify-between font-bold text-[11px]">
                     <span>TOTAL</span>
-                    <span>{{ $orden->consumos->count() }} {{ $orden->consumos->count() === 1 ? 'equipo' : 'equipos' }} &bull; {{ $orden->consumos->sum('cantidad') }} unid.</span>
+                    <span>{{ $orden->consumos->count() }} {{ $orden->consumos->count() === 1 ? 'equipo' : 'equipos' }} &bull; {{ $orden->resumenCantidades() }}</span>
                 </div>
             </div>
 
