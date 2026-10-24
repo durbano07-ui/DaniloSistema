@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
-use App\Models\Rol;
 use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
-use Illuminate\View\View;
+use App\Models\Rol;
+use App\Models\Usuario;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class UsuarioController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $usuarios = Usuario::with('rol')->get();
+        // El Almacenista solo ve a los Técnicos
+        $usuarios = Usuario::with('rol')
+            ->when(! $request->user()->tieneRol('Administrador'), fn ($q) => $q->whereHas('rol', fn ($r) => $r->where('nombre', 'Tecnico')))
+            ->get();
 
         return view('usuarios.index', compact('usuarios'));
     }
@@ -24,9 +28,9 @@ class UsuarioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        $roles = Rol::all();
+        $roles = Rol::asignablesPor($request->user())->get();
 
         return view('usuarios.create', compact('roles'));
     }
@@ -55,9 +59,11 @@ class UsuarioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Usuario $usuario): View
+    public function edit(Request $request, Usuario $usuario): View
     {
-        $roles = Rol::all();
+        $this->authorize('administrar-usuario', $usuario);
+
+        $roles = Rol::asignablesPor($request->user())->get();
 
         return view('usuarios.edit', compact('usuario', 'roles'));
     }
@@ -83,6 +89,8 @@ class UsuarioController extends Controller
      */
     public function destroy(Usuario $usuario): RedirectResponse
     {
+        $this->authorize('eliminar-usuario', $usuario);
+
         $usuario->delete();
 
         return redirect()->route('usuarios.index')->with('status', 'Usuario eliminado exitosamente.');
@@ -93,7 +101,7 @@ class UsuarioController extends Controller
      */
     public function restablecerPassword(Usuario $usuario): RedirectResponse
     {
-        $this->authorize('gestionar-personal');
+        $this->authorize('administrar-usuario', $usuario);
 
         $password = self::generarPassword();
         $usuario->update(['password' => $password]);

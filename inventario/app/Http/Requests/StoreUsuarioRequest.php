@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Rol;
 use App\Rules\CedulaEcuatoriana;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class StoreUsuarioRequest extends FormRequest
 {
@@ -27,7 +29,7 @@ class StoreUsuarioRequest extends FormRequest
         return [
             'numero_cedula' => ['required', 'string', 'size:10', 'unique:usuarios,numero_cedula', new CedulaEcuatoriana],
             'nombre' => ['required', 'string', 'max:30'],
-            'id_rol' => ['required', 'exists:roles,id_rol'],
+            'id_rol' => ['required', Rule::in(Rol::asignablesPor($this->user())->pluck('id_rol'))],
             // Si se deja vacía, el sistema genera una contraseña automáticamente
             'password' => ['nullable', 'string', 'min:8'],
         ];

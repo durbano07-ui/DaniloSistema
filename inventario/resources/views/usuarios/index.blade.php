@@ -143,7 +143,7 @@
                                             </a>
 
                                             <!-- Eliminar -->
-                                            @if (Auth::user()->numero_cedula !== $usuario->numero_cedula)
+                                            @can('eliminar-usuario', $usuario)
                                                 <form method="POST"
                                                       action="{{ route('usuarios.destroy', $usuario) }}"
                                                       onsubmit="return confirm('¿Estás seguro de que deseas eliminar al usuario {{ $usuario->nombre }}?');">
@@ -157,7 +157,7 @@
                                                         </svg>
                                                     </button>
                                                 </form>
-                                            @endif
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>

@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Rol;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class UpdateUsuarioRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class UpdateUsuarioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('gestionar-personal');
+        return Gate::allows('administrar-usuario', $this->route('usuario'));
     }
 
     /**
@@ -25,7 +27,7 @@ class UpdateUsuarioRequest extends FormRequest
     {
         return [
             'nombre' => ['required', 'string', 'max:30'],
-            'id_rol' => ['required', 'exists:roles,id_rol'],
+            'id_rol' => ['required', Rule::in(Rol::asignablesPor($this->user())->pluck('id_rol'))],
             'password' => ['nullable', 'string', 'min:8'],
             'estado' => ['sometimes', 'boolean'],
         ];
