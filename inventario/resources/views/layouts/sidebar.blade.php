@@ -54,6 +54,24 @@
                 <span>Almacén</span>
             </a>
 
+            <!-- Proveedores -->
+            <a href="{{ route('proveedores.index') }}"
+               class="flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-xs font-semibold tracking-wide transition-all {{ request()->routeIs('proveedores.*') ? 'bg-[#2563EB] text-white shadow-sm' : 'text-[#CBD5E1] hover:text-white hover:bg-[#334155]' }}">
+                <svg class="w-4 h-4 flex-shrink-0 {{ request()->routeIs('proveedores.*') ? 'text-white' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0zM13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10h10zm0 0h2m4 0h1a1 1 0 001-1v-3.65a1 1 0 00-.22-.624l-3.48-4.35A1 1 0 0016.52 6H13" />
+                </svg>
+                <span>Proveedores</span>
+            </a>
+
+            <!-- Técnicos (el Almacenista solo gestiona Técnicos) -->
+            <a href="{{ route('usuarios.index') }}"
+               class="flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-xs font-semibold tracking-wide transition-all {{ request()->routeIs('usuarios.*') ? 'bg-[#2563EB] text-white shadow-sm' : 'text-[#CBD5E1] hover:text-white hover:bg-[#334155]' }}">
+                <svg class="w-4 h-4 flex-shrink-0 {{ request()->routeIs('usuarios.*') ? 'text-white' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span>Técnicos</span>
+            </a>
+
             <!-- 5. Reportes -->
             <a href="{{ route('reportes.index') }}"
                class="flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-xs font-semibold tracking-wide transition-all {{ request()->routeIs('reportes.*') ? 'bg-[#2563EB] text-white shadow-sm' : 'text-[#CBD5E1] hover:text-white hover:bg-[#334155]' }}">
@@ -92,6 +110,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                     <span>Gestión de Almacén</span>
+                </a>
+            @endcan
+
+            @can('gestionar-inventario')
+                <a href="{{ route('proveedores.index') }}"
+                   class="flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-xs font-semibold tracking-wide transition-all {{ request()->routeIs('proveedores.*') ? 'bg-[#2563EB] text-white shadow-sm' : 'text-[#CBD5E1] hover:text-white hover:bg-[#334155]' }}">
+                    <svg class="w-4 h-4 flex-shrink-0 {{ request()->routeIs('proveedores.*') ? 'text-white' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0zM13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10h10zm0 0h2m4 0h1a1 1 0 001-1v-3.65a1 1 0 00-.22-.624l-3.48-4.35A1 1 0 0016.52 6H13" />
+                    </svg>
+                    <span>Proveedores</span>
                 </a>
             @endcan
 

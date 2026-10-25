@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\ActaController;
 use App\Http\Controllers\AlmacenController;
-use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ConsumoController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ModeloController;
-use App\Http\Controllers\ReporteController;
-use App\Http\Controllers\ActaController;
-use App\Http\Controllers\ConsumoController;
 use App\Http\Controllers\NotaConsumoController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    if (!auth()->check()) {
+    if (! auth()->check()) {
         return redirect()->route('login');
     }
     if (auth()->user()->tieneRol('Tecnico')) {
@@ -23,6 +24,7 @@ Route::get('/', function () {
     if (auth()->user()->tieneRol('Almacenista')) {
         return redirect()->route('productos.index');
     }
+
     return redirect()->route('dashboard');
 });
 
@@ -30,6 +32,7 @@ Route::get('/dashboard', function () {
     if (auth()->check() && auth()->user()->tieneRol('Tecnico')) {
         return redirect()->route('consumos.index');
     }
+
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -55,6 +58,7 @@ Route::middleware(['auth', 'can:gestionar-almacen'])->group(function () {
 Route::middleware(['auth', 'can:gestionar-inventario'])->group(function () {
     Route::resource('productos', ProductoController::class)->except(['show']);
     Route::resource('categorias', CategoriaController::class)->parameters(['categorias' => 'categoria'])->except(['show']);
+    Route::resource('proveedores', ProveedorController::class)->parameters(['proveedores' => 'proveedor'])->except(['show', 'destroy']);
     Route::post('/marcas', [MarcaController::class, 'store'])->name('marcas.store');
     Route::put('/marcas/{marca}', [MarcaController::class, 'update'])->name('marcas.update');
     Route::delete('/marcas/{marca}', [MarcaController::class, 'destroy'])->name('marcas.destroy');
@@ -94,4 +98,3 @@ Route::middleware(['auth', 'can:registrar-consumo'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
