@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <a href="{{ route('productos.index') }}"
-               class="p-2 rounded-xl text-[#64748B] hover:text-[#1E293B] hover:bg-white border border-transparent hover:border-[#E2E8F0] transition-all">
+               class="p-2 rounded-xl text-ink-500 hover:text-ink-900 hover:bg-white border border-transparent hover:border-ink-200 transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
             </a>
-            <h1 class="text-xl font-semibold text-[#0F172A] tracking-tight">Registrar Nuevo Producto</h1>
+            <h1 class="text-xl font-semibold text-ink-950 tracking-tight">Registrar Nuevo Producto</h1>
         </div>
     </x-slot>
 
@@ -271,39 +271,39 @@
             @csrf
 
             <!-- NAVEGACIÓN ENTRE SECCIONES (TABS / PASOS) -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white border border-[#E2E8F0] p-2.5 rounded-2xl shadow-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white border border-ink-200 p-2.5 rounded-2xl shadow-xs">
                 <div class="flex items-center gap-1 sm:gap-2 overflow-x-auto py-1">
                     <!-- Sección 1 Tab -->
                     <button type="button"
                             @click="seccion = 1"
-                            :class="seccion === 1 ? 'bg-[#F8FAFC] text-[#2563EB] border-[#E2E8F0] font-bold shadow-2xs' : 'text-[#64748B] hover:text-[#1E293B] border-transparent font-semibold'"
+                            :class="seccion === 1 ? 'bg-ink-50 text-brand-600 border-ink-200 font-bold shadow-2xs' : 'text-ink-500 hover:text-ink-900 border-transparent font-semibold'"
                             class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border text-xs transition-all whitespace-nowrap cursor-pointer">
                         <span class="w-5 h-5 rounded-lg flex items-center justify-center text-[11px] font-semibold"
-                              :class="seccion === 1 ? 'bg-[#2563EB] text-white' : 'bg-[#E2E8F0] text-[#64748B]'">1</span>
+                              :class="seccion === 1 ? 'bg-brand-600 text-white' : 'bg-ink-200 text-ink-500'">1</span>
                         <span>Código y Serie</span>
                     </button>
 
-                    <svg class="w-3.5 h-3.5 text-[#CBD5E1] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg class="w-3.5 h-3.5 text-ink-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
 
                     <!-- Sección 2 Tab -->
                     <button type="button"
                             @click="seccion = 2"
-                            :class="seccion === 2 ? 'bg-[#F8FAFC] text-[#2563EB] border-[#E2E8F0] font-bold shadow-2xs' : 'text-[#64748B] hover:text-[#1E293B] border-transparent font-semibold'"
+                            :class="seccion === 2 ? 'bg-ink-50 text-brand-600 border-ink-200 font-bold shadow-2xs' : 'text-ink-500 hover:text-ink-900 border-transparent font-semibold'"
                             class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border text-xs transition-all whitespace-nowrap cursor-pointer">
                         <span class="w-5 h-5 rounded-lg flex items-center justify-center text-[11px] font-semibold"
-                              :class="seccion === 2 ? 'bg-[#2563EB] text-white' : 'bg-[#E2E8F0] text-[#64748B]'">2</span>
+                              :class="seccion === 2 ? 'bg-brand-600 text-white' : 'bg-ink-200 text-ink-500'">2</span>
                         <span>Clasificación</span>
                     </button>
 
-                    <svg class="w-3.5 h-3.5 text-[#CBD5E1] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg class="w-3.5 h-3.5 text-ink-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
 
                     <!-- Sección 3 Tab -->
                     <button type="button"
                             @click="seccion = 3"
-                            :class="seccion === 3 ? 'bg-[#F8FAFC] text-[#2563EB] border-[#E2E8F0] font-bold shadow-2xs' : 'text-[#64748B] hover:text-[#1E293B] border-transparent font-semibold'"
+                            :class="seccion === 3 ? 'bg-ink-50 text-brand-600 border-ink-200 font-bold shadow-2xs' : 'text-ink-500 hover:text-ink-900 border-transparent font-semibold'"
                             class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border text-xs transition-all whitespace-nowrap cursor-pointer">
                         <span class="w-5 h-5 rounded-lg flex items-center justify-center text-[11px] font-semibold"
-                              :class="seccion === 3 ? 'bg-[#2563EB] text-white' : 'bg-[#E2E8F0] text-[#64748B]'">3</span>
+                              :class="seccion === 3 ? 'bg-brand-600 text-white' : 'bg-ink-200 text-ink-500'">3</span>
                         <span>Ubicación</span>
                     </button>
                 </div>
@@ -311,7 +311,7 @@
                 <!-- Botón de Alternar Modo de Vista (Pasos vs Completo) -->
                 <button type="button"
                         @click="vistaCompleta = !vistaCompleta"
-                        class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E2E8F0] text-xs font-semibold text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] transition-all cursor-pointer">
+                        class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-ink-200 text-xs font-semibold text-ink-500 hover:text-ink-900 hover:bg-ink-50 transition-all cursor-pointer">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
@@ -322,34 +322,34 @@
             <!-- ==================== SECCIÓN 1: IDENTIFICACIÓN Y CÓDIGO ==================== -->
             <div x-show="vistaCompleta || seccion === 1"
                  x-transition.opacity
-                 class="bg-white border border-[#E2E8F0] rounded-2xl shadow-[0_1px_2px_rgba(15,23,42,0.04)] p-6 sm:p-7 space-y-6">
+                 class="bg-white border border-ink-200 rounded-2xl shadow-card p-6 sm:p-7 space-y-6">
                 <!-- Encabezado de la Sección -->
-                <div class="flex items-center justify-between pb-4 border-b border-[#F1F5F9]">
+                <div class="flex items-center justify-between pb-4 border-b border-ink-100">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-xl bg-[#EFF6FF] text-[#2563EB] font-semibold text-sm flex items-center justify-center border border-[#BFDBFE]">
+                        <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 font-semibold text-sm flex items-center justify-center border border-brand-200">
                             1
                         </div>
                         <div>
-                            <h2 class="text-sm sm:text-base font-bold text-[#1E293B]">Identificación y Código de Barras</h2>
+                            <h2 class="text-sm sm:text-base font-bold text-ink-900">Identificación y Código de Barras</h2>
                         </div>
                     </div>
-                    <span class="text-[11px] text-[#64748B] hidden sm:flex items-center gap-1.5 font-medium">
-                        <span class="w-2 h-2 rounded-full bg-[#2563EB] animate-ping"></span>
+                    <span class="text-[11px] text-ink-500 hidden sm:flex items-center gap-1.5 font-medium">
+                        <span class="w-2 h-2 rounded-full bg-brand-600 animate-ping"></span>
                         Listo para lector USB/Bluetooth
                     </span>
                 </div>
 
                 <!-- 1.1 Modalidad de Ingreso -->
-                <div class="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-2xs">
+                <div class="p-4 rounded-xl bg-ink-50 border border-ink-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-2xs">
                     <div>
-                        <span class="block text-xs font-bold uppercase tracking-wider text-[#1E293B]">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-ink-900">
                             Modalidad de Ingreso
                         </span>
                     </div>
-                    <div class="inline-flex p-1 rounded-xl bg-white border border-[#E2E8F0]">
+                    <div class="inline-flex p-1 rounded-xl bg-white border border-ink-200">
                         <button type="button"
                                 @click="tipo = 'unitario'; cantidad = 1"
-                                :class="tipo === 'unitario' ? 'bg-[#1E293B] text-white shadow-xs font-bold' : 'text-[#64748B] hover:text-[#1E293B] font-medium'"
+                                :class="tipo === 'unitario' ? 'bg-ink-900 text-white shadow-xs font-bold' : 'text-ink-500 hover:text-ink-900 font-medium'"
                                 class="px-3.5 py-1.5 rounded-xl text-xs transition-all flex items-center gap-1.5 cursor-pointer">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
@@ -358,7 +358,7 @@
                         </button>
                         <button type="button"
                                 @click="tipo = 'lote'; if(cantidad <= 1) cantidad = 100"
-                                :class="tipo === 'lote' ? 'bg-[#2563EB] text-white shadow-xs font-bold' : 'text-[#64748B] hover:text-[#1E293B] font-medium'"
+                                :class="tipo === 'lote' ? 'bg-brand-600 text-white shadow-xs font-bold' : 'text-ink-500 hover:text-ink-900 font-medium'"
                                 class="px-3.5 py-1.5 rounded-xl text-xs transition-all flex items-center gap-1.5 cursor-pointer">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
@@ -370,12 +370,12 @@
                 </div>
 
                 <!-- 1.2 Cantidad del Lote (Solo cuando tipo === 'lote') -->
-                <div x-show="tipo === 'lote'" x-cloak x-transition class="p-4 rounded-xl bg-[#F1F5F9]/60 border border-[#E2E8F0] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div x-show="tipo === 'lote'" x-cloak x-transition class="p-4 rounded-xl bg-ink-100/60 border border-ink-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                        <label for="cantidad_lote" class="block text-xs font-bold uppercase tracking-wider text-[#2563EB]">
+                        <label for="cantidad_lote" class="block text-xs font-bold uppercase tracking-wider text-brand-600">
                             Cantidad Inicial del Lote <span class="text-rose-500">*</span>
                         </label>
-                        <p class="text-[11px] text-[#64748B]" x-text="unidad === 'metros' ? 'Metros totales del rollo o bobina (p. ej. cable).' : 'Número de unidades físicas contenidas en el lote.'"></p>
+                        <p class="text-[11px] text-ink-500" x-text="unidad === 'metros' ? 'Metros totales del rollo o bobina (p. ej. cable).' : 'Número de unidades físicas contenidas en el lote.'"></p>
                     </div>
                     <div class="flex items-center gap-2">
                         <input type="number"
@@ -384,12 +384,12 @@
                                x-model.number="cantidad"
                                min="1"
                                max="100000"
-                               class="w-32 rounded-xl bg-white border border-[#E2E8F0] text-[#1E293B] text-center font-mono font-bold text-base py-2 px-3 focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]" />
+                               class="w-32 rounded-xl bg-white border border-ink-200 text-ink-900 text-center font-mono font-bold text-base py-2 px-3 focus:ring-2 focus:ring-brand-600/20 focus:border-brand-600" />
                         <select name="unidad"
                                 x-model="unidad"
                                 :disabled="tipo !== 'lote'"
                                 aria-label="Unidad de medida del lote"
-                                class="rounded-xl bg-white border border-[#E2E8F0] text-[#1E293B] text-xs font-bold py-2 pl-3 pr-8 focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] cursor-pointer">
+                                class="rounded-xl bg-white border border-ink-200 text-ink-900 text-xs font-bold py-2 pl-3 pr-8 focus:ring-2 focus:ring-brand-600/20 focus:border-brand-600 cursor-pointer">
                             <option value="unidades">unidades</option>
                             <option value="metros">metros</option>
                         </select>
@@ -399,16 +399,16 @@
                 <!-- 1.3 Número de Serie / Código de Barras -->
                 <div class="space-y-3">
                     <div class="flex items-center justify-between">
-                        <label for="numero_serie" class="block text-xs font-bold text-[#1E293B] uppercase tracking-wider">
+                        <label for="numero_serie" class="block text-xs font-bold text-ink-900 uppercase tracking-wider">
                             <span x-text="tipo === 'lote' ? 'Código de Lote / Código de Barras *' : 'Número de Serie / Código de Barras *'"></span>
                         </label>
-                        <span class="text-[11px] text-[#64748B]">
+                        <span class="text-[11px] text-ink-500">
                             Presiona <strong>Enter</strong> o <strong>Verificar</strong> tras escanear
                         </span>
                     </div>
 
                     <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#2563EB]">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-600">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-4v4m0-4v-4m0 4h.01M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
@@ -425,12 +425,12 @@
                                required
                                maxlength="50"
                                autocomplete="off"
-                               class="w-full pl-11 pr-24 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 text-[#1E293B] placeholder-[#94A3B8] font-mono text-sm transition-all" />
+                               class="w-full pl-11 pr-24 py-2.5 rounded-xl bg-ink-50 border border-ink-200 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-ink-900 placeholder-ink-400 font-mono text-sm transition-all" />
 
                         <div class="absolute inset-y-0 right-2 flex items-center">
                             <button type="button"
                                     @click="handleSerieEnter()"
-                                    class="px-3.5 py-1.5 rounded-xl bg-[#1E293B] hover:bg-[#334155] text-white text-xs font-semibold cursor-pointer transition-all">
+                                    class="px-3.5 py-1.5 rounded-xl bg-ink-900 hover:bg-ink-700 text-white text-xs font-semibold cursor-pointer transition-all">
                                 Verificar
                             </button>
                         </div>
@@ -443,9 +443,9 @@
                     </div>
 
                     <!-- Previsualización de Código de Barras SVG con JsBarcode -->
-                    <div x-show="serie.trim().length > 0 && checkStatus !== 'error'" x-transition class="pt-3 border-t border-[#F1F5F9] flex items-center justify-between">
-                        <span class="text-[11px] text-[#64748B] font-medium">Etiqueta de código de barras generada:</span>
-                        <div class="bg-[#F8FAFC] px-3 py-1.5 rounded-xl border border-[#E2E8F0]">
+                    <div x-show="serie.trim().length > 0 && checkStatus !== 'error'" x-transition class="pt-3 border-t border-ink-100 flex items-center justify-between">
+                        <span class="text-[11px] text-ink-500 font-medium">Etiqueta de código de barras generada:</span>
+                        <div class="bg-ink-50 px-3 py-1.5 rounded-xl border border-ink-200">
                             <svg x-ref="barcodeSvg"></svg>
                         </div>
                     </div>
@@ -459,10 +459,10 @@
                 </div>
 
                 <!-- Botón de avance para Sección 1 -->
-                <div x-show="!vistaCompleta" class="flex items-center justify-end pt-4 border-t border-[#F1F5F9]">
+                <div x-show="!vistaCompleta" class="flex items-center justify-end pt-4 border-t border-ink-100">
                     <button type="button"
                             @click="avanzarASeccion2()"
-                            class="px-5 py-2.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer">
+                            class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer">
                         <span>Continuar a Clasificación</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </button>
@@ -472,15 +472,15 @@
             <!-- ==================== SECCIÓN 2: CLASIFICACIÓN DEL EQUIPO ==================== -->
             <div x-show="vistaCompleta || seccion === 2"
                  x-transition.opacity
-                 class="bg-white border border-[#E2E8F0] rounded-2xl shadow-[0_1px_2px_rgba(15,23,42,0.04)] p-6 sm:p-7 space-y-6">
+                 class="bg-white border border-ink-200 rounded-2xl shadow-card p-6 sm:p-7 space-y-6">
                 <!-- Encabezado de la Sección -->
-                <div class="flex items-center justify-between pb-4 border-b border-[#F1F5F9]">
+                <div class="flex items-center justify-between pb-4 border-b border-ink-100">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-xl bg-[#EFF6FF] text-[#2563EB] font-semibold text-sm flex items-center justify-center border border-[#BFDBFE]">
+                        <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 font-semibold text-sm flex items-center justify-center border border-brand-200">
                             2
                         </div>
                         <div>
-                            <h2 class="text-sm sm:text-base font-bold text-[#1E293B]">Clasificación y Denominación</h2>
+                            <h2 class="text-sm sm:text-base font-bold text-ink-900">Clasificación y Denominación</h2>
                         </div>
                     </div>
                 </div>
@@ -489,7 +489,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <!-- Categoría -->
                     <div>
-                        <label for="id_cat" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">
+                        <label for="id_cat" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">
                             Categoría <span class="text-rose-500">*</span>
                         </label>
                         <select id="id_cat"
@@ -497,7 +497,7 @@
                                 x-model="idCat"
                                 @change="onCatChange()"
                                 required
-                                class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2.5 text-[#1E293B] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 text-sm transition-all font-medium">
+                                class="w-full rounded-xl bg-ink-50 border border-ink-200 px-3.5 py-2.5 text-ink-900 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm transition-all font-medium">
                             <option value="" disabled>Seleccione categoría...</option>
                             @foreach ($categorias as $cat)
                                 <option value="{{ $cat->id_cat }}">
@@ -513,13 +513,13 @@
                     <!-- Marca -->
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <label for="id_marca" class="block text-xs font-bold uppercase tracking-wider text-[#64748B]">
+                            <label for="id_marca" class="block text-xs font-bold uppercase tracking-wider text-ink-500">
                                 Marca
                             </label>
                             <button type="button"
                                     x-show="idCat"
                                     @click="quickMarcaOpen = true; quickMarcaError = ''"
-                                    class="text-[11px] font-bold text-[#2563EB] hover:underline cursor-pointer">
+                                    class="text-[11px] font-bold text-brand-600 hover:underline cursor-pointer">
                                 + Nueva
                             </button>
                         </div>
@@ -528,7 +528,7 @@
                                 x-model="idMarca"
                                 @change="onMarcaChange()"
                                 :disabled="!idCat"
-                                class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2.5 text-[#1E293B] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 text-sm transition-all font-medium disabled:bg-[#F1F5F9] disabled:opacity-60">
+                                class="w-full rounded-xl bg-ink-50 border border-ink-200 px-3.5 py-2.5 text-ink-900 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm transition-all font-medium disabled:bg-ink-100 disabled:opacity-60">
                             <option value="">Seleccione marca...</option>
                             <template x-for="m in marcasDisponibles" :key="m.id_marca">
                                 <option :value="m.id_marca" x-text="m.nombre" :selected="String(m.id_marca) === String(idMarca)"></option>
@@ -542,13 +542,13 @@
                     <!-- Modelo -->
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <label for="id_modelo" class="block text-xs font-bold uppercase tracking-wider text-[#64748B]">
+                            <label for="id_modelo" class="block text-xs font-bold uppercase tracking-wider text-ink-500">
                                 Modelo
                             </label>
                             <button type="button"
                                     x-show="idMarca"
                                     @click="quickModeloOpen = true; quickModeloError = ''"
-                                    class="text-[11px] font-bold text-[#2563EB] hover:underline cursor-pointer">
+                                    class="text-[11px] font-bold text-brand-600 hover:underline cursor-pointer">
                                 + Nuevo
                             </button>
                         </div>
@@ -557,7 +557,7 @@
                                 x-model="idModelo"
                                 @change="onModeloChange()"
                                 :disabled="!idMarca"
-                                class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2.5 text-[#1E293B] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 text-sm transition-all font-medium disabled:bg-[#F1F5F9] disabled:opacity-60">
+                                class="w-full rounded-xl bg-ink-50 border border-ink-200 px-3.5 py-2.5 text-ink-900 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm transition-all font-medium disabled:bg-ink-100 disabled:opacity-60">
                             <option value="">Seleccione modelo...</option>
                             <template x-for="mod in modelosDisponibles" :key="mod.id_modelo">
                                 <option :value="mod.id_modelo" x-text="mod.nombre" :selected="String(mod.id_modelo) === String(idModelo)"></option>
@@ -573,10 +573,10 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="sm:col-span-2">
                     <div class="flex items-center justify-between mb-1.5">
-                        <label for="nombre" class="block text-xs font-bold uppercase tracking-wider text-[#64748B]">
+                        <label for="nombre" class="block text-xs font-bold uppercase tracking-wider text-ink-500">
                             Nombre o Descripción del Equipo <span class="text-rose-500">*</span>
                         </label>
-                        <span x-show="nombreAuto" class="text-[11px] text-[#2563EB] font-semibold">
+                        <span x-show="nombreAuto" class="text-[11px] text-brand-600 font-semibold">
                             Auto-generado a partir de categoría, marca y modelo
                         </span>
                     </div>
@@ -589,7 +589,7 @@
                            placeholder="Ej. Router TP-Link Archer C6"
                            required
                            maxlength="255"
-                           class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] placeholder-[#94A3B8] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 text-sm transition-all" />
+                           class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 placeholder-ink-400 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm transition-all" />
                     @error('nombre')
                         <p class="mt-1.5 text-xs text-rose-600 font-medium flex items-center gap-1">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -600,13 +600,13 @@
 
                 <!-- Estado del Equipo (Nuevo / Usado) -->
                 <div>
-                    <label for="condicion" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">
+                    <label for="condicion" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">
                         Estado <span class="text-rose-500">*</span>
                     </label>
                     <select id="condicion"
                                 name="condicion"
                                 required
-                                class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2.5 text-[#1E293B] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 text-sm transition-all font-medium">
+                                class="w-full rounded-xl bg-ink-50 border border-ink-200 px-3.5 py-2.5 text-ink-900 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm transition-all font-medium">
                             <option value="nuevo" {{ old('condicion', 'nuevo') === 'nuevo' ? 'selected' : '' }}>Nuevo</option>
                             <option value="usado" {{ old('condicion', 'nuevo') === 'usado' ? 'selected' : '' }}>Usado</option>
                         </select>
@@ -617,16 +617,16 @@
                 </div>
 
                 <!-- Botones de navegación para Sección 2 -->
-                <div x-show="!vistaCompleta" class="flex items-center justify-between pt-4 border-t border-[#F1F5F9]">
+                <div x-show="!vistaCompleta" class="flex items-center justify-between pt-4 border-t border-ink-100">
                     <button type="button"
                             @click="seccion = 1"
-                            class="px-4 py-2 rounded-xl border border-[#E2E8F0] text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer">
+                            class="px-4 py-2 rounded-xl border border-ink-200 text-ink-500 hover:text-ink-900 hover:bg-ink-50 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                         <span>Anterior</span>
                     </button>
                     <button type="button"
                             @click="avanzarASeccion3()"
-                            class="px-5 py-2.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer">
+                            class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer">
                         <span>Continuar a Ubicación</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </button>
@@ -636,15 +636,15 @@
             <!-- ==================== SECCIÓN 3: UBICACIÓN Y DESTINO ==================== -->
             <div x-show="vistaCompleta || seccion === 3"
                  x-transition.opacity
-                 class="bg-white border border-[#E2E8F0] rounded-2xl shadow-[0_1px_2px_rgba(15,23,42,0.04)] p-6 sm:p-7 space-y-6">
+                 class="bg-white border border-ink-200 rounded-2xl shadow-card p-6 sm:p-7 space-y-6">
                 <!-- Encabezado de la Sección -->
-                <div class="flex items-center justify-between pb-4 border-b border-[#F1F5F9]">
+                <div class="flex items-center justify-between pb-4 border-b border-ink-100">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-xl bg-[#EFF6FF] text-[#2563EB] font-semibold text-sm flex items-center justify-center border border-[#BFDBFE]">
+                        <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 font-semibold text-sm flex items-center justify-center border border-brand-200">
                             3
                         </div>
                         <div>
-                            <h2 class="text-sm sm:text-base font-bold text-[#1E293B]">Almacén y Procedencia</h2>
+                            <h2 class="text-sm sm:text-base font-bold text-ink-900">Almacén y Procedencia</h2>
                         </div>
                     </div>
                 </div>
@@ -656,13 +656,13 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <!-- Almacén Asignado -->
                     <div>
-                        <label for="id_almacen" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">
+                        <label for="id_almacen" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">
                             Bodega / Almacén de Destino <span class="text-rose-500">*</span>
                         </label>
                         <select id="id_almacen"
                                 name="id_almacen"
                                 required
-                                class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] placeholder-[#94A3B8] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 text-sm transition-all">
+                                class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 placeholder-ink-400 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm transition-all">
                             <option value="" disabled {{ old('id_almacen') ? '' : 'selected' }}>Seleccione el almacén...</option>
                             @foreach ($almacenes as $alm)
                                 <option value="{{ $alm->id_almacen }}" {{ old('id_almacen') == $alm->id_almacen ? 'selected' : '' }}>
@@ -680,13 +680,13 @@
 
                     <!-- Proveedor -->
                     <div>
-                        <label for="id_proveedor" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">
+                        <label for="id_proveedor" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">
                             Proveedor <span class="text-rose-500">*</span>
                         </label>
                         <select id="id_proveedor"
                                 name="id_proveedor"
                                 required
-                                class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] placeholder-[#94A3B8] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 text-sm transition-all">
+                                class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 placeholder-ink-400 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm transition-all">
                             <option value="" disabled {{ old('id_proveedor') ? '' : 'selected' }}>Seleccione el proveedor...</option>
                             @foreach ($proveedores as $prov)
                                 <option value="{{ $prov->id_prov }}" {{ old('id_proveedor') == $prov->id_prov ? 'selected' : '' }}>
@@ -704,38 +704,38 @@
                 </div>
 
                 <!-- Resumen Compacto Pre-Ingreso -->
-                <div class="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-[#64748B] space-y-1.5">
+                <div class="p-4 rounded-xl bg-ink-50 border border-ink-200 text-xs text-ink-500 space-y-1.5">
                     <div class="flex items-center justify-between font-medium">
                         <span>Equipo a ingresar:</span>
-                        <span class="font-bold text-[#1E293B] truncate max-w-[280px]" x-text="nombre.trim() || 'Sin definir todavía'"></span>
+                        <span class="font-bold text-ink-900 truncate max-w-[280px]" x-text="nombre.trim() || 'Sin definir todavía'"></span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span>Serie / Código:</span>
-                        <span class="font-mono font-bold text-[#2563EB]" x-text="serie.trim() || 'No asignada'"></span>
+                        <span class="font-mono font-bold text-brand-600" x-text="serie.trim() || 'No asignada'"></span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span>Modalidad:</span>
-                        <span class="font-semibold text-[#1E293B]" x-text="tipo === 'lote' ? ('Lote (' + cantidad + (unidad === 'metros' ? ' m' : ' unidades') + ')') : 'Equipo Individual (1 unidad)'"></span>
+                        <span class="font-semibold text-ink-900" x-text="tipo === 'lote' ? ('Lote (' + cantidad + (unidad === 'metros' ? ' m' : ' unidades') + ')') : 'Equipo Individual (1 unidad)'"></span>
                     </div>
                 </div>
 
                 <!-- Botones de Acción -->
-                <div class="flex items-center justify-between pt-4 border-t border-[#F1F5F9]">
+                <div class="flex items-center justify-between pt-4 border-t border-ink-100">
                     <div x-show="!vistaCompleta">
                         <button type="button"
                                 @click="seccion = 2"
-                                class="px-4 py-2 rounded-xl border border-[#E2E8F0] text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer">
+                                class="px-4 py-2 rounded-xl border border-ink-200 text-ink-500 hover:text-ink-900 hover:bg-ink-50 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                             <span>Anterior</span>
                         </button>
                     </div>
                     <div :class="vistaCompleta ? 'w-full flex items-center justify-end gap-3' : 'flex items-center gap-3 ml-auto'">
                         <a href="{{ route('productos.index') }}"
-                           class="px-5 py-2.5 rounded-xl border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] text-xs font-semibold transition-colors">
+                           class="px-5 py-2.5 rounded-xl border border-ink-200 bg-white text-ink-500 hover:text-ink-900 hover:bg-ink-50 text-xs font-semibold transition-colors">
                             Cancelar
                         </a>
                         <button type="submit"
-                                class="px-6 py-2.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#2563EB] cursor-pointer">
+                                class="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-brand-600 cursor-pointer">
                             Registrar Entrada de Equipo
                         </button>
                     </div>
@@ -751,37 +751,37 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-[#1E293B]/70 backdrop-blur-sm"
+             class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-ink-900/70 backdrop-blur-sm"
              style="display: none;">
-            <div @click.away="quickMarcaOpen = false" class="relative bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-sm w-full p-6 space-y-4">
-                <div class="flex items-center justify-between pb-2 border-b border-[#F1F5F9]">
-                    <h3 class="text-sm font-bold text-[#1E293B]">Agregar Nueva Marca</h3>
-                    <button type="button" @click="quickMarcaOpen = false" class="text-[#64748B] hover:text-[#1E293B]">
+            <div @click.away="quickMarcaOpen = false" class="relative bg-white rounded-2xl border border-ink-200 shadow-2xl max-w-sm w-full p-6 space-y-4">
+                <div class="flex items-center justify-between pb-2 border-b border-ink-100">
+                    <h3 class="text-sm font-bold text-ink-900">Agregar Nueva Marca</h3>
+                    <button type="button" @click="quickMarcaOpen = false" class="text-ink-500 hover:text-ink-900">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
 
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1">Nombre de la Marca</label>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1">Nombre de la Marca</label>
                         <input type="text"
                                x-model="quickMarcaNombre"
                                @keydown.enter.prevent="guardarQuickMarca()"
                                placeholder="Ej. MikroTik, ZTE, TP-Link..."
-                               class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2 text-sm text-[#1E293B] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" />
+                               class="w-full rounded-xl bg-ink-50 border border-ink-200 px-3.5 py-2 text-sm text-ink-900 focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20" />
                     </div>
 
                     <div x-show="quickMarcaError" class="text-xs text-rose-600 font-medium" x-text="quickMarcaError"></div>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-[#F1F5F9]">
-                    <button type="button" @click="quickMarcaOpen = false" class="px-3.5 py-1.5 rounded-xl border border-[#E2E8F0] text-xs font-semibold text-[#64748B] hover:bg-[#F8FAFC]">
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-ink-100">
+                    <button type="button" @click="quickMarcaOpen = false" class="px-3.5 py-1.5 rounded-xl border border-ink-200 text-xs font-semibold text-ink-500 hover:bg-ink-50">
                         Cancelar
                     </button>
                     <button type="button"
                             @click="guardarQuickMarca()"
                             :disabled="quickMarcaLoading"
-                            class="px-4 py-1.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold shadow-xs disabled:opacity-60">
+                            class="px-4 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-xs disabled:opacity-60">
                         <span x-text="quickMarcaLoading ? 'Guardando...' : 'Agregar Marca'"></span>
                     </button>
                 </div>
@@ -796,37 +796,37 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-[#1E293B]/70 backdrop-blur-sm"
+             class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-ink-900/70 backdrop-blur-sm"
              style="display: none;">
-            <div @click.away="quickModeloOpen = false" class="relative bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-sm w-full p-6 space-y-4">
-                <div class="flex items-center justify-between pb-2 border-b border-[#F1F5F9]">
-                    <h3 class="text-sm font-bold text-[#1E293B]">Agregar Nuevo Modelo</h3>
-                    <button type="button" @click="quickModeloOpen = false" class="text-[#64748B] hover:text-[#1E293B]">
+            <div @click.away="quickModeloOpen = false" class="relative bg-white rounded-2xl border border-ink-200 shadow-2xl max-w-sm w-full p-6 space-y-4">
+                <div class="flex items-center justify-between pb-2 border-b border-ink-100">
+                    <h3 class="text-sm font-bold text-ink-900">Agregar Nuevo Modelo</h3>
+                    <button type="button" @click="quickModeloOpen = false" class="text-ink-500 hover:text-ink-900">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
 
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1">Nombre / Referencia del Modelo</label>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1">Nombre / Referencia del Modelo</label>
                         <input type="text"
                                x-model="quickModeloNombre"
                                @keydown.enter.prevent="guardarQuickModelo()"
                                placeholder="Ej. Archer C6, HG8310M..."
-                               class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2 text-sm text-[#1E293B] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" />
+                               class="w-full rounded-xl bg-ink-50 border border-ink-200 px-3.5 py-2 text-sm text-ink-900 focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20" />
                     </div>
 
                     <div x-show="quickModeloError" class="text-xs text-rose-600 font-medium" x-text="quickModeloError"></div>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-[#F1F5F9]">
-                    <button type="button" @click="quickModeloOpen = false" class="px-3.5 py-1.5 rounded-xl border border-[#E2E8F0] text-xs font-semibold text-[#64748B] hover:bg-[#F8FAFC]">
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-ink-100">
+                    <button type="button" @click="quickModeloOpen = false" class="px-3.5 py-1.5 rounded-xl border border-ink-200 text-xs font-semibold text-ink-500 hover:bg-ink-50">
                         Cancelar
                     </button>
                     <button type="button"
                             @click="guardarQuickModelo()"
                             :disabled="quickModeloLoading"
-                            class="px-4 py-1.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold shadow-xs disabled:opacity-60">
+                            class="px-4 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-xs disabled:opacity-60">
                         <span x-text="quickModeloLoading ? 'Guardando...' : 'Agregar Modelo'"></span>
                     </button>
                 </div>

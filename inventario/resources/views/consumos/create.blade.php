@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <a href="{{ route('consumos.index') }}"
-               class="p-2 rounded-xl text-[#64748B] hover:text-[#1E293B] hover:bg-white border border-transparent hover:border-[#E2E8F0] transition-all">
+               class="p-2 rounded-xl text-ink-500 hover:text-ink-900 hover:bg-white border border-transparent hover:border-ink-200 transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
             </a>
-            <h1 class="text-xl font-semibold text-[#0F172A] tracking-tight">Salida de Equipos &bull; Lector de Código de Barras</h1>
+            <h1 class="text-xl font-semibold text-ink-950 tracking-tight">Salida de Equipos &bull; Lector de Código de Barras</h1>
         </div>
     </x-slot>
 
@@ -220,19 +220,19 @@
          }">
 
         <!-- Banner Modo Escáner Físico / Pistola -->
-        <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-[0_1px_2px_rgba(15,23,42,0.04)] relative overflow-hidden">
+        <div class="p-6 rounded-2xl bg-white border border-ink-200 shadow-card relative overflow-hidden">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE] flex items-center justify-center flex-shrink-0">
+                    <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 border border-brand-200 flex items-center justify-center flex-shrink-0">
                         <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-4v4m0-4v-4m0 4h.01M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                     </div>
                     <div>
                         <div class="flex items-center gap-2.5">
-                            <h2 class="text-base font-bold text-[#1E293B] tracking-tight">Terminal de Salida por Código de Barras</h2>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
-                                <span class="w-2 h-2 rounded-full bg-[#2563EB] animate-ping"></span>
+                            <h2 class="text-base font-bold text-ink-900 tracking-tight">Terminal de Salida por Código de Barras</h2>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-brand-50 text-brand-600 border border-brand-200">
+                                <span class="w-2 h-2 rounded-full bg-brand-600 animate-ping"></span>
                                 Pistola Lectora Activa
                             </span>
                         </div>
@@ -242,8 +242,8 @@
                 <div class="flex items-center gap-2">
                     <button type="button"
                             @click="toggleCamera()"
-                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#F8FAFC] hover:bg-[#F1F5F9] text-[#1E293B] text-xs font-semibold border border-[#E2E8F0] transition-all cursor-pointer">
-                        <svg class="w-4 h-4 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-ink-50 hover:bg-ink-100 text-ink-900 text-xs font-semibold border border-ink-200 transition-all cursor-pointer">
+                        <svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
@@ -252,7 +252,7 @@
 
                     <button type="button"
                             @click="manualMode = !manualMode"
-                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#F8FAFC] hover:bg-[#F1F5F9] text-[#64748B] hover:text-[#1E293B] text-xs font-semibold border border-[#E2E8F0] transition-all cursor-pointer">
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-ink-50 hover:bg-ink-100 text-ink-500 hover:text-ink-900 text-xs font-semibold border border-ink-200 transition-all cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                         </svg>
@@ -264,24 +264,24 @@
             <!-- Visor de Cámara Web/Móvil (cuando se activa) -->
             <div x-show="isScanningCamera"
                  x-transition
-                 class="mt-4 p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-center"
+                 class="mt-4 p-4 rounded-xl bg-ink-50 border border-ink-200 text-center"
                  style="display: none;">
-                <p class="text-xs text-[#2563EB] font-semibold mb-3">Enfoca el código de barras o QR con la cámara:</p>
+                <p class="text-xs text-brand-600 font-semibold mb-3">Enfoca el código de barras o QR con la cámara:</p>
                 <div id="camera-reader" class="w-full max-w-sm mx-auto overflow-hidden rounded-xl bg-black"></div>
                 <button type="button"
                         @click="stopCamera()"
-                        class="mt-3 px-4 py-1.5 rounded-full bg-white border border-[#E2E8F0] text-[#64748B] text-xs hover:text-[#1E293B] cursor-pointer">
+                        class="mt-3 px-4 py-1.5 rounded-full bg-white border border-ink-200 text-ink-500 text-xs hover:text-ink-900 cursor-pointer">
                     Cancelar Escaneo
                 </button>
             </div>
 
             <!-- Campo Principal del Lector de Código de Barras -->
             <div class="mt-6">
-                <label for="barcode-scanner-input" class="block text-xs font-bold text-[#2563EB] uppercase tracking-wider mb-2">
+                <label for="barcode-scanner-input" class="block text-xs font-bold text-brand-600 uppercase tracking-wider mb-2">
                     Disparo de Pistola / Ingreso Rápido de Serie:
                 </label>
                 <div class="relative flex items-center">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#2563EB]">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-brand-600">
                         <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-4v4m0-4v-4m0 4h.01M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -297,13 +297,13 @@
                            placeholder="Escanea el código con el lector o ingresa la serie..."
                            autocomplete="off"
                            autofocus
-                           class="w-full pl-12 pr-28 py-3.5 bg-[#F8FAFC] border-2 border-[#E2E8F0] focus:border-[#2563EB] focus:ring-4 focus:ring-[#2563EB]/10 rounded-xl text-[#1E293B] font-mono text-base placeholder-[#94A3B8] transition-all tracking-wider" />
+                           class="w-full pl-12 pr-28 py-3.5 bg-ink-50 border-2 border-ink-200 focus:border-brand-600 focus:ring-4 focus:ring-brand-600/10 rounded-xl text-ink-900 font-mono text-base placeholder-ink-400 transition-all tracking-wider" />
 
                     <div class="absolute inset-y-0 right-1.5 flex items-center gap-1.5 pr-2">
                         <button type="button"
                                 @click="handleScanSubmit()"
                                 :disabled="isLoading || !scanCode.trim()"
-                                class="px-4 py-2 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] disabled:opacity-40 text-white font-bold text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer">
+                                class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-40 text-white font-bold text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer">
                             <span x-show="!isLoading">+ Añadir</span>
                             <span x-show="isLoading" class="inline-flex items-center">
                                 <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -316,7 +316,7 @@
                 </div>
 
                 <!-- Mensajes Reactivos de Retroalimentación del Escaneo -->
-                <div x-show="scanError" x-transition class="mt-3 p-3.5 rounded-xl bg-[#FEF2F2] border border-[#FECACA] text-rose-700 text-xs flex items-center justify-between gap-3 shadow-xs">
+                <div x-show="scanError" x-transition class="mt-3 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center justify-between gap-3 shadow-xs">
                     <div class="flex items-center gap-2">
                         <svg class="w-5 h-5 flex-shrink-0 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -326,7 +326,7 @@
                     <button type="button" @click="scanError = null; focusScanner();" class="text-rose-600 hover:text-rose-900 cursor-pointer">&times;</button>
                 </div>
 
-                <div x-show="scanSuccess" x-transition class="mt-3 p-3 rounded-xl bg-[#F0FDF4] border border-[#BBF7D0] text-emerald-800 text-xs flex items-center justify-between gap-3 shadow-xs">
+                <div x-show="scanSuccess" x-transition class="mt-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center justify-between gap-3 shadow-xs">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 flex-shrink-0 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -339,14 +339,14 @@
         </div>
 
         <!-- Selector Manual Desplegable (Modo Alternativo) -->
-        <div x-show="manualMode" x-transition class="p-6 rounded-2xl bg-white border border-[#E2E8F0] space-y-3 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <div x-show="manualMode" x-transition class="p-6 rounded-2xl bg-white border border-ink-200 space-y-3 shadow-card">
             <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-[#64748B] uppercase tracking-wider">Añadir Manualmente desde el Catálogo</span>
-                <span class="text-xs text-[#94A3B8] font-medium">{{ $productosDisponibles->count() }} equipos disponibles</span>
+                <span class="text-xs font-bold text-ink-500 uppercase tracking-wider">Añadir Manualmente desde el Catálogo</span>
+                <span class="text-xs text-ink-400 font-medium">{{ $productosDisponibles->count() }} equipos disponibles</span>
             </div>
             <select x-model="selectedManualSerie"
                     @change="if (selectedManualSerie) { lookupAndAdd(selectedManualSerie); selectedManualSerie = ''; }"
-                    class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] text-sm focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 cursor-pointer">
+                    class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 text-sm focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 cursor-pointer">
                 <option value="">-- Elige un equipo para añadirlo a la tabla del pedido --</option>
                 @foreach ($productosDisponibles as $prod)
                     <option value="{{ $prod->numero_serie }}">
@@ -373,21 +373,21 @@
             <input type="hidden" name="cantidad" :value="items.length > 0 ? items[0].cantidad : 1" />
 
             <!-- ==================== 1. TABLA ACUMULATIVA DEL PEDIDO ==================== -->
-            <div class="bg-white border border-[#E2E8F0] rounded-2xl shadow-[0_1px_2px_rgba(15,23,42,0.04)] overflow-hidden p-6 sm:p-7 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-[#F1F5F9]">
+            <div class="bg-white border border-ink-200 rounded-2xl shadow-card overflow-hidden p-6 sm:p-7 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-ink-100">
                     <div>
                         <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 rounded-xl bg-[#EFF6FF] text-[#2563EB] font-semibold text-sm flex items-center justify-center border border-[#BFDBFE]">
+                            <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 font-semibold text-sm flex items-center justify-center border border-brand-200">
                                 1
                             </div>
                             <div>
-                                <h2 class="text-sm sm:text-base font-bold text-[#1E293B]">Equipos en la Orden de Salida</h2>
+                                <h2 class="text-sm sm:text-base font-bold text-ink-900">Equipos en la Orden de Salida</h2>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#F8FAFC] text-[#1E293B] border border-[#E2E8F0]"
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-ink-50 text-ink-900 border border-ink-200"
                               x-show="items.length > 0">
                             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                             <span x-text="items.length + (items.length === 1 ? ' producto' : ' productos')"></span>
@@ -406,22 +406,22 @@
 
                 <!-- Estado Vacío -->
                 <template x-if="items.length === 0">
-                    <div class="p-8 rounded-xl bg-[#F8FAFC] border-2 border-dashed border-[#E2E8F0] text-center space-y-2">
-                        <div class="w-12 h-12 mx-auto rounded-xl bg-white text-[#2563EB] border border-[#E2E8F0] flex items-center justify-center shadow-xs">
+                    <div class="p-8 rounded-xl bg-ink-50 border-2 border-dashed border-ink-200 text-center space-y-2">
+                        <div class="w-12 h-12 mx-auto rounded-xl bg-white text-brand-600 border border-ink-200 flex items-center justify-center shadow-xs">
                             <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-4v4m0-4v-4m0 4h.01M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <h4 class="text-sm font-bold text-[#1E293B]">El pedido está vacío</h4>
+                        <h4 class="text-sm font-bold text-ink-900">El pedido está vacío</h4>
                     </div>
                 </template>
 
                 <!-- Tabla con los productos acumulados -->
                 <template x-if="items.length > 0">
-                    <div class="overflow-x-auto rounded-xl border border-[#E2E8F0]">
+                    <div class="overflow-x-auto rounded-xl border border-ink-200">
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
-                                <tr class="bg-[#F8FAFC] text-[#64748B] uppercase font-bold text-[10px] tracking-wider border-b border-[#E2E8F0]">
+                                <tr class="bg-ink-50 text-ink-500 uppercase font-bold text-[10px] tracking-wider border-b border-ink-200">
                                     <th class="py-3 px-3 w-8 text-center">#</th>
                                     <th class="py-3 px-4">Serie / Código</th>
                                     <th class="py-3 px-4">Equipo / Marca / Modelo</th>
@@ -430,23 +430,23 @@
                                     <th class="py-3 px-3 text-right">Quitar</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-[#F1F5F9] bg-white">
+                            <tbody class="divide-y divide-ink-100 bg-white">
                                 <template x-for="(item, index) in items" :key="item.numero_serie">
-                                    <tr class="hover:bg-[#F8FAFC]/60 transition-colors">
+                                    <tr class="hover:bg-ink-50/60 transition-colors">
                                         <!-- Index -->
-                                        <td class="py-3.5 px-3 text-center font-mono font-bold text-[#94A3B8]" x-text="index + 1"></td>
+                                        <td class="py-3.5 px-3 text-center font-mono font-bold text-ink-400" x-text="index + 1"></td>
 
                                         <!-- Serie / Código -->
                                         <td class="py-3.5 px-4 whitespace-nowrap">
-                                            <span class="font-mono font-bold text-[#2563EB] text-xs" x-text="item.numero_serie"></span>
+                                            <span class="font-mono font-bold text-brand-600 text-xs" x-text="item.numero_serie"></span>
                                             <div class="mt-0.5">
                                                 <template x-if="item.tipo === 'lote'">
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-600 border border-brand-200">
                                                         Lote (<span x-text="item.cantidad_disponible + (item.unidad === 'metros' ? ' m' : '')"></span> disp.)
                                                     </span>
                                                 </template>
                                                 <template x-if="item.tipo !== 'lote'">
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]">
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-ink-50 text-ink-500 border border-ink-200">
                                                         Individual
                                                     </span>
                                                 </template>
@@ -455,22 +455,22 @@
 
                                         <!-- Producto / Clasificación -->
                                         <td class="py-3.5 px-4">
-                                            <p class="font-bold text-[#1E293B] text-xs" x-text="item.nombre"></p>
-                                            <div class="flex items-center gap-1.5 mt-0.5 text-[11px] text-[#64748B]">
+                                            <p class="font-bold text-ink-900 text-xs" x-text="item.nombre"></p>
+                                            <div class="flex items-center gap-1.5 mt-0.5 text-[11px] text-ink-500">
                                                 <span class="font-medium" x-text="item.categoria"></span>
                                                 <template x-if="item.marca">
-                                                    <span class="text-[#94A3B8]">&bull;</span>
+                                                    <span class="text-ink-400">&bull;</span>
                                                 </template>
                                                 <template x-if="item.marca">
-                                                    <span class="font-semibold text-[#1E293B]" x-text="item.marca + (item.modelo ? ' ' + item.modelo : '')"></span>
+                                                    <span class="font-semibold text-ink-900" x-text="item.marca + (item.modelo ? ' ' + item.modelo : '')"></span>
                                                 </template>
                                             </div>
                                         </td>
 
                                         <!-- Bodega -->
-                                        <td class="py-3.5 px-4 whitespace-nowrap text-[#475569]">
+                                        <td class="py-3.5 px-4 whitespace-nowrap text-ink-600">
                                             <div class="flex items-center gap-1.5">
-                                                <svg class="w-3.5 h-3.5 text-[#94A3B8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg class="w-3.5 h-3.5 text-ink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                                 </svg>
                                                 <span class="font-medium" x-text="item.almacen"></span>
@@ -480,10 +480,10 @@
                                         <!-- Cantidad a Despachar -->
                                         <td class="py-3.5 px-4 whitespace-nowrap text-center">
                                             <template x-if="item.tipo === 'lote'">
-                                                <div class="inline-flex items-center gap-1.5 bg-[#F8FAFC] p-1 rounded-xl border border-[#E2E8F0]">
+                                                <div class="inline-flex items-center gap-1.5 bg-ink-50 p-1 rounded-xl border border-ink-200">
                                                     <button type="button"
                                                             @click="if (item.cantidad > 1) item.cantidad--"
-                                                            class="w-6 h-6 rounded-lg bg-white text-[#64748B] hover:text-[#1E293B] hover:bg-[#E2E8F0] flex items-center justify-center font-bold text-xs border border-[#E2E8F0] cursor-pointer">
+                                                            class="w-6 h-6 rounded-lg bg-white text-ink-500 hover:text-ink-900 hover:bg-ink-200 flex items-center justify-center font-bold text-xs border border-ink-200 cursor-pointer">
                                                         -
                                                     </button>
                                                     <input type="number"
@@ -491,17 +491,17 @@
                                                            min="1"
                                                            :max="item.cantidad_disponible"
                                                            @change="if (item.cantidad < 1) item.cantidad = 1; if (item.cantidad > item.cantidad_disponible) item.cantidad = item.cantidad_disponible;"
-                                                           class="w-14 py-0.5 px-1 text-center font-mono font-bold text-xs bg-white border border-[#E2E8F0] rounded-lg text-[#1E293B]" />
+                                                           class="w-14 py-0.5 px-1 text-center font-mono font-bold text-xs bg-white border border-ink-200 rounded-lg text-ink-900" />
                                                     <button type="button"
                                                             @click="if (item.cantidad < item.cantidad_disponible) item.cantidad++"
-                                                            class="w-6 h-6 rounded-lg bg-white text-[#64748B] hover:text-[#1E293B] hover:bg-[#E2E8F0] flex items-center justify-center font-bold text-xs border border-[#E2E8F0] cursor-pointer">
+                                                            class="w-6 h-6 rounded-lg bg-white text-ink-500 hover:text-ink-900 hover:bg-ink-200 flex items-center justify-center font-bold text-xs border border-ink-200 cursor-pointer">
                                                         +
                                                     </button>
-                                                    <span class="text-[10px] text-[#64748B] px-1 font-semibold" x-text="item.unidad === 'metros' ? 'm' : 'unids.'"></span>
+                                                    <span class="text-[10px] text-ink-500 px-1 font-semibold" x-text="item.unidad === 'metros' ? 'm' : 'unids.'"></span>
                                                 </div>
                                             </template>
                                             <template x-if="item.tipo !== 'lote'">
-                                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#F8FAFC] text-[#1E293B] border border-[#E2E8F0] font-semibold text-xs">
+                                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-ink-50 text-ink-900 border border-ink-200 font-semibold text-xs">
                                                     1 unidad
                                                 </span>
                                             </template>
@@ -511,7 +511,7 @@
                                         <td class="py-3.5 px-3 text-right">
                                             <button type="button"
                                                     @click="removeItem(index)"
-                                                    class="p-1.5 rounded-lg text-[#64748B] hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                                                    class="p-1.5 rounded-lg text-ink-500 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                                                     title="Quitar este equipo de la lista">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -521,12 +521,12 @@
                                     </tr>
                                 </template>
                             </tbody>
-                            <tfoot class="bg-[#F8FAFC] border-t border-[#E2E8F0] font-bold text-xs text-[#1E293B]">
+                            <tfoot class="bg-ink-50 border-t border-ink-200 font-bold text-xs text-ink-900">
                                 <tr>
-                                    <td colspan="4" class="py-3 px-4 text-right text-[#64748B] uppercase text-[10px] tracking-wider">
+                                    <td colspan="4" class="py-3 px-4 text-right text-ink-500 uppercase text-[10px] tracking-wider">
                                         Total a Despachar:
                                     </td>
-                                    <td class="py-3 px-4 text-center font-mono text-[#2563EB] text-sm">
+                                    <td class="py-3 px-4 text-center font-mono text-brand-600 text-sm">
                                         <span x-text="resumenCantidades"></span>
                                     </td>
                                     <td></td>
@@ -551,20 +551,20 @@
             </div>
 
             <!-- ==================== 2. DATOS DEL RETIRO TÉCNICO ==================== -->
-            <div class="bg-white border border-[#E2E8F0] rounded-2xl shadow-[0_1px_2px_rgba(15,23,42,0.04)] overflow-hidden p-6 sm:p-7 space-y-4">
-                <div class="flex items-center gap-2.5 pb-4 border-b border-[#F1F5F9]">
-                    <div class="w-8 h-8 rounded-xl bg-[#EFF6FF] text-[#2563EB] font-semibold text-sm flex items-center justify-center border border-[#BFDBFE]">
+            <div class="bg-white border border-ink-200 rounded-2xl shadow-card overflow-hidden p-6 sm:p-7 space-y-4">
+                <div class="flex items-center gap-2.5 pb-4 border-b border-ink-100">
+                    <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 font-semibold text-sm flex items-center justify-center border border-brand-200">
                         2
                     </div>
                     <div>
-                        <h2 class="text-sm sm:text-base font-bold text-[#1E293B]">Datos del Retiro Técnico</h2>
+                        <h2 class="text-sm sm:text-base font-bold text-ink-900">Datos del Retiro Técnico</h2>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <!-- Fecha de Salida -->
                     <div>
-                        <label for="fecha" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">
+                        <label for="fecha" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">
                             Fecha de Retiro <span class="text-rose-500">*</span>
                         </label>
                         <input type="date"
@@ -572,7 +572,7 @@
                                name="fecha"
                                value="{{ old('fecha', date('Y-m-d')) }}"
                                required
-                               class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] font-mono text-sm focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" />
+                               class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 font-mono text-sm focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20" />
                         @error('fecha')
                             <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
                         @enderror
@@ -581,21 +581,21 @@
                     <!-- Técnico Receptor -->
                     <div>
                         @if(Auth::user()->tieneRol('Tecnico'))
-                            <label class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">
                                 Técnico Responsable
                             </label>
-                            <div class="px-4 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm text-[#1E293B] flex items-center justify-between">
-                                <span class="font-bold text-[#1E293B]">{{ Auth::user()->nombre }}</span>
-                                <span class="text-xs text-[#64748B] font-mono">{{ Auth::user()->numero_cedula }}</span>
+                            <div class="px-4 py-2.5 rounded-xl bg-ink-50 border border-ink-200 text-sm text-ink-900 flex items-center justify-between">
+                                <span class="font-bold text-ink-900">{{ Auth::user()->nombre }}</span>
+                                <span class="text-xs text-ink-500 font-mono">{{ Auth::user()->numero_cedula }}</span>
                             </div>
                         @else
-                            <label for="numero_cedula" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">
+                            <label for="numero_cedula" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">
                                 Técnico Receptor / Asignado a: <span class="text-rose-500">*</span>
                             </label>
                             <select id="numero_cedula"
                                     name="numero_cedula"
                                     required
-                                    class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] text-sm focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 cursor-pointer">
+                                    class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 text-sm focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 cursor-pointer">
                                 <option value="" disabled {{ old('numero_cedula') ? '' : 'selected' }}>
                                     -- Selecciona el técnico que recibe el equipo --
                                 </option>
@@ -614,7 +614,7 @@
 
                 <!-- Motivo / Orden de Trabajo / Destino -->
                 <div>
-                    <label for="motivo" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">
+                    <label for="motivo" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">
                         Motivo / Orden de Trabajo / Cliente Destino <span class="text-rose-500">*</span>
                     </label>
                     <textarea id="motivo"
@@ -623,21 +623,21 @@
                               maxlength="255"
                               required
                               placeholder="Ej. Instalación de acometida, módem y spliters en cliente residencial - OT #5021, Barrio Central"
-                              class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-2.5 text-[#1E293B] placeholder-[#94A3B8] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 text-sm transition-all">{{ old('motivo') }}</textarea>
+                              class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 placeholder-ink-400 focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm transition-all">{{ old('motivo') }}</textarea>
                     @error('motivo')
                         <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Botones de Acción -->
-                <div class="flex items-center justify-end gap-3 pt-4 border-t border-[#F1F5F9]">
+                <div class="flex items-center justify-end gap-3 pt-4 border-t border-ink-100">
                     <a href="{{ route('consumos.index') }}"
-                       class="px-5 py-2.5 rounded-xl border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] text-sm font-semibold transition-colors">
+                       class="px-5 py-2.5 rounded-xl border border-ink-200 bg-white text-ink-500 hover:text-ink-900 hover:bg-ink-50 text-sm font-semibold transition-colors">
                         Cancelar
                     </a>
                     <button type="submit"
                             :disabled="items.length === 0"
-                            :class="items.length > 0 ? 'bg-[#2563EB] hover:bg-[#1D4ED8] text-white cursor-pointer shadow-sm' : 'bg-[#F8FAFC] text-[#94A3B8] cursor-not-allowed border border-[#E2E8F0]'"
+                            :class="items.length > 0 ? 'bg-brand-600 hover:bg-brand-700 text-white cursor-pointer shadow-sm' : 'bg-ink-50 text-ink-400 cursor-not-allowed border border-ink-200'"
                             class="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />

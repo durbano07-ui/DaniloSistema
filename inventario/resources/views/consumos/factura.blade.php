@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <a href="{{ route('consumos.index') }}"
-               class="p-2 rounded-xl text-[#64748B] hover:text-[#1E293B] hover:bg-white border border-transparent hover:border-[#E2E8F0] transition-all">
+               class="p-2 rounded-xl text-ink-500 hover:text-ink-900 hover:bg-white border border-transparent hover:border-ink-200 transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
             </a>
-            <h1 class="text-xl font-semibold text-[#0F172A] tracking-tight">Salida con Factura</h1>
+            <h1 class="text-xl font-semibold text-ink-950 tracking-tight">Salida con Factura</h1>
         </div>
     </x-slot>
 
@@ -90,45 +90,45 @@
         @csrf
 
         <!-- Datos del Acta -->
-        <div class="bg-white rounded-2xl border border-[#E2E8F0] shadow-[0_1px_2px_rgba(15,23,42,0.04)] p-6 space-y-5">
+        <div class="bg-white rounded-2xl border border-ink-200 shadow-card p-6 space-y-5">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                    <label for="fecha" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">Fecha <span class="text-rose-500">*</span></label>
+                    <label for="fecha" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">Fecha <span class="text-rose-500">*</span></label>
                     <input type="date" id="fecha" name="fecha" required
                            value="{{ old('fecha', now()->toDateString()) }}"
-                           class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2.5 text-sm text-[#1E293B] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 font-mono" />
+                           class="w-full rounded-xl bg-ink-50 border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 font-mono" />
                     @error('fecha')<p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>@enderror
                 </div>
                 <div>
-                    <span class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">N.º de Factura</span>
-                    <div class="px-3.5 py-2.5 rounded-xl bg-[#F1F5F9] border border-[#E2E8F0] text-sm font-semibold font-mono text-[#1E293B]" title="Se asigna automáticamente al registrar">{{ $siguienteFactura }}</div>
+                    <span class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">N.º de Factura</span>
+                    <div class="px-3.5 py-2.5 rounded-xl bg-ink-100 border border-ink-200 text-sm font-semibold font-mono text-ink-900" title="Se asigna automáticamente al registrar">{{ $siguienteFactura }}</div>
                 </div>
                 <div>
-                    <span class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">Destino</span>
-                    <div class="px-3.5 py-2.5 rounded-xl bg-[#F1F5F9] border border-[#E2E8F0] text-sm font-semibold text-[#1E293B]">{{ $formato['destino'] }}</div>
+                    <span class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">Destino</span>
+                    <div class="px-3.5 py-2.5 rounded-xl bg-ink-100 border border-ink-200 text-sm font-semibold text-ink-900">{{ $formato['destino'] }}</div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div class="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
-                    <span class="block font-bold uppercase tracking-wider text-[#64748B] text-[10px] mb-1">Entrega</span>
-                    <span class="block font-semibold text-[#1E293B]">{{ $formato['entrega_nombre'] }}</span>
-                    <span class="block text-[#64748B]">{{ $formato['entrega_cargo'] }} &middot; C.I. {{ $formato['entrega_cedula'] }}</span>
+                <div class="p-3.5 rounded-xl bg-ink-50 border border-ink-200">
+                    <span class="block font-bold uppercase tracking-wider text-ink-500 text-[10px] mb-1">Entrega</span>
+                    <span class="block font-semibold text-ink-900">{{ $formato['entrega_nombre'] }}</span>
+                    <span class="block text-ink-500">{{ $formato['entrega_cargo'] }} &middot; C.I. {{ $formato['entrega_cedula'] }}</span>
                 </div>
-                <div class="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
-                    <span class="block font-bold uppercase tracking-wider text-[#64748B] text-[10px] mb-1">Recibe</span>
-                    <span class="block font-semibold text-[#1E293B]">{{ $formato['recibe_nombre'] }}</span>
-                    <span class="block text-[#64748B]">{{ $formato['recibe_cargo'] }} &middot; C.I. {{ $formato['recibe_cedula'] }}</span>
+                <div class="p-3.5 rounded-xl bg-ink-50 border border-ink-200">
+                    <span class="block font-bold uppercase tracking-wider text-ink-500 text-[10px] mb-1">Recibe</span>
+                    <span class="block font-semibold text-ink-900">{{ $formato['recibe_nombre'] }}</span>
+                    <span class="block text-ink-500">{{ $formato['recibe_cargo'] }} &middot; C.I. {{ $formato['recibe_cedula'] }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Equipos -->
-        <div class="bg-white rounded-2xl border border-[#E2E8F0] shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
-            <div class="p-6 pb-4 border-b border-[#E2E8F0]">
-                <label for="busqueda" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">Agregar equipos del inventario</label>
+        <div class="bg-white rounded-2xl border border-ink-200 shadow-card">
+            <div class="p-6 pb-4 border-b border-ink-200">
+                <label for="busqueda" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">Agregar equipos del inventario</label>
                 <div class="relative" @click.outside="listaAbierta = false">
-                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#94A3B8]">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -139,26 +139,26 @@
                            @input.debounce.250ms="buscar()"
                            @keydown.enter.prevent="agregarPorSerie()"
                            placeholder="Busca por nombre o serie, o usa el lector de código de barras"
-                           class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm text-[#1E293B] placeholder-[#94A3B8] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" />
+                           class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-ink-50 border border-ink-200 text-sm text-ink-900 placeholder-ink-400 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20" />
 
                     <div x-show="listaAbierta && !resultados.length && busqueda.trim()"
                          x-cloak
-                         class="absolute left-0 right-0 mt-2 rounded-xl bg-white border border-[#E2E8F0] shadow-xl px-4 py-3 z-30 text-sm text-[#94A3B8]">
+                         class="absolute left-0 right-0 mt-2 rounded-xl bg-white border border-ink-200 shadow-xl px-4 py-3 z-30 text-sm text-ink-400">
                         Sin coincidencias en el inventario disponible
                     </div>
 
                     <div x-show="listaAbierta && resultados.length"
                          x-cloak
-                         class="absolute left-0 right-0 mt-2 rounded-xl bg-white border border-[#E2E8F0] shadow-xl p-1.5 z-30 max-h-72 overflow-y-auto">
+                         class="absolute left-0 right-0 mt-2 rounded-xl bg-white border border-ink-200 shadow-xl p-1.5 z-30 max-h-72 overflow-y-auto">
                         <template x-for="p in resultados" :key="p.numero_serie">
                             <button type="button"
                                     @click="agregar(p)"
-                                    class="w-full flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-left hover:bg-[#F8FAFC] transition-colors">
+                                    class="w-full flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-left hover:bg-ink-50 transition-colors">
                                 <span>
-                                    <span class="block text-sm font-semibold text-[#1E293B]" x-text="p.nombre"></span>
-                                    <span class="block text-[11px] font-mono text-[#94A3B8]" x-text="p.numero_serie"></span>
+                                    <span class="block text-sm font-semibold text-ink-900" x-text="p.nombre"></span>
+                                    <span class="block text-[11px] font-mono text-ink-400" x-text="p.numero_serie"></span>
                                 </span>
-                                <span class="text-[11px] text-[#64748B] whitespace-nowrap" x-text="(p.categoria ?? '') + (p.tipo === 'lote' ? ' · ' + p.disponible + (p.unidad === 'metros' ? ' m' : '') + ' disp.' : '')"></span>
+                                <span class="text-[11px] text-ink-500 whitespace-nowrap" x-text="(p.categoria ?? '') + (p.tipo === 'lote' ? ' · ' + p.disponible + (p.unidad === 'metros' ? ' m' : '') + ' disp.' : '')"></span>
                             </button>
                         </template>
                     </div>
@@ -172,7 +172,7 @@
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
-                    <thead class="bg-[#F8FAFC] text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
+                    <thead class="bg-ink-50 text-[10px] font-bold uppercase tracking-wider text-ink-500">
                         <tr>
                             <th class="py-3 px-6">Descripción</th>
                             <th class="py-3 px-4 w-28">Cantidad</th>
@@ -181,13 +181,13 @@
                             <th class="py-3 px-6 w-12"><span class="sr-only">Quitar</span></th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-[#F1F5F9]">
+                    <tbody class="divide-y divide-ink-100">
                         <template x-for="(item, index) in items" :key="item.numero_serie">
                             <tr>
                                 <td class="py-3 px-6">
                                     <input type="hidden" :name="`items[${index}][numero_serie]`" :value="item.numero_serie">
-                                    <span class="block font-semibold text-[#1E293B]" x-text="item.nombre"></span>
-                                    <span class="block text-[11px] font-mono text-[#94A3B8]" x-text="'S/N: ' + item.numero_serie"></span>
+                                    <span class="block font-semibold text-ink-900" x-text="item.nombre"></span>
+                                    <span class="block text-[11px] font-mono text-ink-400" x-text="'S/N: ' + item.numero_serie"></span>
                                 </td>
                                 <td class="py-3 px-4">
                                     <template x-if="item.tipo === 'lote'">
@@ -195,33 +195,33 @@
                                                :name="`items[${index}][cantidad]`"
                                                x-model.number="item.cantidad"
                                                @change="if (item.cantidad < 1) item.cantidad = 1; if (item.cantidad > item.disponible) item.cantidad = item.disponible"
-                                               class="w-20 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] px-2.5 py-1.5 text-sm text-right font-mono focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" />
+                                               class="w-20 rounded-lg bg-ink-50 border border-ink-200 px-2.5 py-1.5 text-sm text-right font-mono focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20" />
                                     </template>
                                     <template x-if="item.unidad === 'metros'">
-                                        <span class="text-[11px] font-semibold text-[#64748B] pl-1">m</span>
+                                        <span class="text-[11px] font-semibold text-ink-500 pl-1">m</span>
                                     </template>
                                     <template x-if="item.tipo !== 'lote'">
                                         <span>
                                             <input type="hidden" :name="`items[${index}][cantidad]`" value="1">
-                                            <span class="font-mono text-[#1E293B] pl-2.5">1</span>
+                                            <span class="font-mono text-ink-900 pl-2.5">1</span>
                                         </span>
                                     </template>
                                 </td>
                                 <td class="py-3 px-4">
                                     <div class="relative">
-                                        <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center text-[#94A3B8] text-xs">$</span>
+                                        <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center text-ink-400 text-xs">$</span>
                                         <input type="number" min="0" step="0.01" required
                                                :name="`items[${index}][precio_unitario]`"
                                                :data-precio="item.numero_serie"
                                                x-model="item.precio_unitario"
                                                placeholder="0.00"
-                                               class="w-28 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] pl-6 pr-2.5 py-1.5 text-sm text-right font-mono focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" />
+                                               class="w-28 rounded-lg bg-ink-50 border border-ink-200 pl-6 pr-2.5 py-1.5 text-sm text-right font-mono focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20" />
                                     </div>
                                 </td>
-                                <td class="py-3 px-4 text-right font-mono font-semibold text-[#1E293B]" x-text="dinero(totalLinea(item))"></td>
+                                <td class="py-3 px-4 text-right font-mono font-semibold text-ink-900" x-text="dinero(totalLinea(item))"></td>
                                 <td class="py-3 px-6 text-right">
                                     <button type="button" @click="quitar(index)"
-                                            class="p-1.5 rounded-lg text-[#94A3B8] hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                                            class="p-1.5 rounded-lg text-ink-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                                             title="Quitar del acta">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -231,24 +231,24 @@
                             </tr>
                         </template>
                         <tr x-show="!items.length">
-                            <td colspan="5" class="py-10 text-center text-sm text-[#94A3B8]">Aún no hay equipos en el acta</td>
+                            <td colspan="5" class="py-10 text-center text-sm text-ink-400">Aún no hay equipos en el acta</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- Totales -->
-            <div class="flex justify-end p-6 border-t border-[#E2E8F0]">
+            <div class="flex justify-end p-6 border-t border-ink-200">
                 <dl class="w-64 space-y-1.5 text-sm">
-                    <div class="flex justify-between text-[#64748B]">
+                    <div class="flex justify-between text-ink-500">
                         <dt>Subtotal</dt>
-                        <dd class="font-mono text-[#1E293B]" x-text="dinero(subtotal)"></dd>
+                        <dd class="font-mono text-ink-900" x-text="dinero(subtotal)"></dd>
                     </div>
-                    <div class="flex justify-between text-[#64748B]">
+                    <div class="flex justify-between text-ink-500">
                         <dt>IVA {{ rtrim(rtrim(number_format($formato['iva'] * 100, 2), '0'), '.') }}%</dt>
-                        <dd class="font-mono text-[#1E293B]" x-text="dinero(montoIva)"></dd>
+                        <dd class="font-mono text-ink-900" x-text="dinero(montoIva)"></dd>
                     </div>
-                    <div class="flex justify-between pt-2 border-t border-[#E2E8F0] font-semibold text-[#0F172A]">
+                    <div class="flex justify-between pt-2 border-t border-ink-200 font-semibold text-ink-950">
                         <dt>Total</dt>
                         <dd class="font-mono" x-text="dinero(total)"></dd>
                     </div>
@@ -257,22 +257,22 @@
         </div>
 
         <!-- Nota y Confirmación -->
-        <div class="bg-white rounded-2xl border border-[#E2E8F0] shadow-[0_1px_2px_rgba(15,23,42,0.04)] p-6 space-y-5">
+        <div class="bg-white rounded-2xl border border-ink-200 shadow-card p-6 space-y-5">
             <div>
-                <label for="nota" class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">Nota</label>
+                <label for="nota" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">Nota</label>
                 <textarea id="nota" name="nota" rows="2" maxlength="500"
-                          class="w-full rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-3.5 py-2.5 text-sm text-[#1E293B] focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20">{{ old('nota') }}</textarea>
+                          class="w-full rounded-xl bg-ink-50 border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20">{{ old('nota') }}</textarea>
                 @error('nota')<p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>@enderror
             </div>
 
             <div class="flex items-center justify-end gap-3">
                 <a href="{{ route('consumos.index') }}"
-                   class="px-4 py-2.5 rounded-xl border border-[#E2E8F0] text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] text-xs font-semibold transition-colors">
+                   class="px-4 py-2.5 rounded-xl border border-ink-200 text-ink-500 hover:text-ink-900 hover:bg-ink-50 text-xs font-semibold transition-colors">
                     Cancelar
                 </a>
                 <button type="submit"
                         :disabled="!items.length"
-                        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                     <span>Registrar salida y generar acta</span>
                 </button>
             </div>
