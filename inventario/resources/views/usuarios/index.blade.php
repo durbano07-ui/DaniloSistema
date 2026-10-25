@@ -69,7 +69,7 @@
                 </div>
             @else
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="tabla-responsiva w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-ink-200 bg-ink-50 text-[11px] font-bold uppercase tracking-wider text-ink-500">
                                 <th class="py-4 px-6">Usuario</th>

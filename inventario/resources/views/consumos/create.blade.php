@@ -419,7 +419,7 @@
                 <!-- Tabla con los productos acumulados -->
                 <template x-if="items.length > 0">
                     <div class="overflow-x-auto rounded-xl border border-ink-200">
-                        <table class="w-full text-left border-collapse text-xs">
+                        <table class="tabla-responsiva w-full text-left border-collapse text-xs">
                             <thead>
                                 <tr class="bg-ink-50 text-ink-500 uppercase font-bold text-[10px] tracking-wider border-b border-ink-200">
                                     <th class="py-3 px-3 w-8 text-center">#</th>

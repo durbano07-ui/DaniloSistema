@@ -39,7 +39,7 @@
                 </div>
             @else
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="tabla-responsiva w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-ink-200 bg-ink-50 text-[11px] font-bold uppercase tracking-wider text-ink-500">
                                 <th class="py-4 px-6">Almacén / Bodega</th>
@@ -68,12 +68,14 @@
                                     </td>
 
                                     <td class="py-4 px-6">
-                                        <span class="font-semibold text-ink-900">
-                                            {{ $almacen->direccion?->ciudad?->nombre ?? 'Sin ciudad' }}
-                                        </span>
-                                        <span class="block text-xs text-ink-500">
-                                            {{ $almacen->direccion?->ciudad?->provincia ?? '' }}
-                                        </span>
+                                        <div>
+                                            <span class="font-semibold text-ink-900">
+                                                {{ $almacen->direccion?->ciudad?->nombre ?? 'Sin ciudad' }}
+                                            </span>
+                                            <span class="block text-xs text-ink-500">
+                                                {{ $almacen->direccion?->ciudad?->provincia ?? '' }}
+                                            </span>
+                                        </div>
                                     </td>
 
                                     <td class="py-4 px-6 text-ink-500 text-xs">

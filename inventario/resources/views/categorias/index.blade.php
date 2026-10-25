@@ -187,7 +187,7 @@
                 </div>
             @else
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="tabla-responsiva w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-ink-200 bg-ink-50 text-[11px] font-bold uppercase tracking-wider text-ink-500">
                                 <th class="py-4 px-6 w-1/3">Marcas</th>
@@ -289,7 +289,7 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-ink-900/70 backdrop-blur-sm"
+             class="fixed inset-0 z-50 overflow-y-auto flex items-end sm:items-center justify-center p-2 sm:p-4 bg-ink-950/40 backdrop-blur-sm"
              style="display: none;">
 
             <div @click.away="modalVerModelosOpen = false"
@@ -427,7 +427,7 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-ink-900/70 backdrop-blur-sm"
+             class="fixed inset-0 z-50 overflow-y-auto flex items-end sm:items-center justify-center p-2 sm:p-4 bg-ink-950/40 backdrop-blur-sm"
              style="display: none;">
 
             <div @click.away="modalMarcaOpen = false"

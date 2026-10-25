@@ -40,4 +40,48 @@ window.playScannerBeep = (type = 'success') => {
     }
 };
 
+// Tablas responsivas: copia el nombre de cada columna a sus celdas para mostrarlas como tarjetas en móvil
+const etiquetarTablas = () => {
+    document.querySelectorAll('table.tabla-responsiva').forEach((tabla) => {
+        const encabezados = [...tabla.querySelectorAll(':scope > thead > tr:first-child > th')].map((th) =>
+            th.querySelector('.sr-only') ? '' : th.textContent.trim().replace(/\s+/g, ' ')
+        );
+
+        tabla.querySelectorAll(':scope > tbody > tr').forEach((fila) => {
+            const celdas = [...fila.children].filter((c) => c.tagName === 'TD' || c.tagName === 'TH');
+            if (celdas.length === 1 && celdas[0].colSpan > 1) {
+                fila.classList.add('fila-completa');
+                return;
+            }
+
+            let columna = 0;
+            celdas.forEach((celda) => {
+                const nombre = encabezados[columna] ?? '';
+                if (!celda.hasAttribute('data-label')) {
+                    celda.setAttribute('data-label', nombre);
+                }
+                if (nombre === '' || /^(acci[oó]n(es)?|quitar|anular|eliminar)$/i.test(nombre)) {
+                    celda.classList.add('celda-acciones');
+                }
+                columna += celda.colSpan || 1;
+            });
+        });
+    });
+};
+
+// Vuelve a etiquetar cuando Alpine agrega filas (pedidos por escáner, actas con factura)
+let etiquetadoPendiente = false;
+new MutationObserver(() => {
+    if (etiquetadoPendiente) {
+        return;
+    }
+    etiquetadoPendiente = true;
+    requestAnimationFrame(() => {
+        etiquetadoPendiente = false;
+        etiquetarTablas();
+    });
+}).observe(document.documentElement, { childList: true, subtree: true });
+
+document.addEventListener('DOMContentLoaded', etiquetarTablas);
+
 Alpine.start();

@@ -57,11 +57,11 @@
             <div class="flex-1 flex flex-col min-w-0 bg-ink-50">
                 <!-- Top Header Bar -->
                 <header class="h-16 flex items-center justify-between gap-4 px-4 sm:px-8 lg:px-10 bg-white/85 border-b border-ink-200/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70 sticky top-0 z-30">
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                         <!-- Mobile Hamburger Button -->
                         <button @click="sidebarOpen = !sidebarOpen"
                                 type="button"
-                                class="lg:hidden p-2 rounded-xl text-ink-500 hover:text-ink-900 hover:bg-ink-100 focus:outline-none focus:ring-2 focus:ring-brand-600">
+                                class="lg:hidden -ml-1 p-2 flex-shrink-0 rounded-xl text-ink-500 hover:text-ink-900 hover:bg-ink-100 focus:outline-none focus:ring-2 focus:ring-brand-600">
                             <span class="sr-only">Abrir menú lateral</span>
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -69,12 +69,13 @@
                         </button>
 
                         @isset($header)
-                            <div>{{ $header }}</div>
+                            {{-- En móvil el título se recorta a una línea y se ocultan las etiquetas que lo acompañan --}}
+                            <div class="min-w-0 flex-1 [&>*]:min-w-0 [&_h1]:truncate [&_h1]:text-base sm:[&_h1]:text-xl [&_h1+*]:hidden sm:[&_h1+*]:inline-flex [&_h1+*]:flex-shrink-0 [&_a]:flex-shrink-0">{{ $header }}</div>
                         @endisset
                     </div>
 
                     <!-- Right user menu button & dropdown -->
-                    <div class="relative" x-data="{ userMenuOpen: false }">
+                    <div class="relative flex-shrink-0" x-data="{ userMenuOpen: false }">
                         <button @click="userMenuOpen = !userMenuOpen"
                                 @click.outside="userMenuOpen = false"
                                 type="button"
@@ -201,12 +202,12 @@
                  x-transition:leave="transition ease-in duration-150"
                  x-transition:leave-start="opacity-100"
                  x-transition:leave-end="opacity-0"
-                 class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-950/40 backdrop-blur-sm"
+                 class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-ink-950/40 backdrop-blur-sm"
                  style="display: none;"
                  @keydown.escape.window="changePasswordModalOpen = false">
 
                 <div @click.outside="changePasswordModalOpen = false"
-                     class="w-full max-w-md rounded-2xl bg-white border border-ink-200 shadow-elevated ring-1 ring-ink-900/5 overflow-hidden p-6 sm:p-8 text-ink-900">
+                     class="w-full max-w-md max-h-[92vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-white border border-ink-200 shadow-elevated ring-1 ring-ink-900/5 p-6 sm:p-8 text-ink-900">
                     
                     <div class="flex items-center justify-between pb-5 border-b border-ink-100 mb-6">
                         <div class="flex items-center gap-3">

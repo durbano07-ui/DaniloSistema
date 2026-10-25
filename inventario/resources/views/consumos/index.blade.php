@@ -5,8 +5,8 @@
 
     <div class="space-y-6" x-data="{ modalOrden: null }" @keydown.escape.window="modalOrden = null">
         <!-- Filter Bar -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <form method="GET" action="{{ route('consumos.index') }}" class="flex flex-wrap items-center gap-3">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <form method="GET" action="{{ route('consumos.index') }}" class="flex flex-wrap items-center gap-2 sm:gap-3">
                 <div class="flex items-center gap-2">
                     <label for="fecha" class="text-xs font-bold uppercase tracking-wider text-ink-500">Fecha:</label>
                     <input type="date"
@@ -27,7 +27,7 @@
                 @endif
             </form>
 
-            <div class="flex items-center gap-4 ml-auto">
+            <div class="flex items-center gap-3 sm:gap-4 ml-auto">
                 <span class="text-xs text-ink-500">
                     {{ $ordenes->total() }} {{ $ordenes->total() === 1 ? 'orden' : 'órdenes' }}
                 </span>
@@ -106,7 +106,7 @@
                 </div>
             @else
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="tabla-responsiva w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-ink-200 bg-ink-50 text-[11px] font-bold uppercase tracking-wider text-ink-500">
                                 <th class="py-4 px-6">Orden</th>
@@ -187,11 +187,11 @@
             <div x-show="modalOrden === {{ $orden->id_orden }}"
                  x-cloak
                  x-transition.opacity
-                 class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-ink-900/60 backdrop-blur-sm"
+                 class="fixed inset-0 z-50 overflow-y-auto flex items-end sm:items-center justify-center p-0 sm:p-4 bg-ink-950/40 backdrop-blur-sm"
                  @click.self="modalOrden = null"
                  role="dialog"
                  aria-modal="true">
-                <div class="w-full max-w-2xl bg-white rounded-2xl border border-ink-200 shadow-xl overflow-hidden">
+                <div class="w-full max-w-2xl bg-white rounded-t-2xl sm:rounded-2xl border border-ink-200 shadow-elevated overflow-hidden">
                     <!-- Encabezado -->
                     <div class="flex items-start justify-between gap-4 px-6 py-5 border-b border-ink-200">
                         <div>
@@ -213,7 +213,7 @@
 
                     <!-- Equipos de la Orden -->
                     <div class="max-h-[60vh] overflow-y-auto">
-                        <table class="w-full text-left text-xs">
+                        <table class="tabla-responsiva w-full text-left text-xs">
                             <thead class="bg-ink-50 text-[10px] font-bold uppercase tracking-wider text-ink-500 sticky top-0">
                                 <tr>
                                     <th class="py-2.5 px-6">Equipo</th>

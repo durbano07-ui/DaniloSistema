@@ -751,7 +751,7 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-ink-900/70 backdrop-blur-sm"
+             class="fixed inset-0 z-50 overflow-y-auto flex items-end sm:items-center justify-center p-2 sm:p-4 bg-ink-950/40 backdrop-blur-sm"
              style="display: none;">
             <div @click.away="quickMarcaOpen = false" class="relative bg-white rounded-2xl border border-ink-200 shadow-2xl max-w-sm w-full p-6 space-y-4">
                 <div class="flex items-center justify-between pb-2 border-b border-ink-100">
@@ -796,7 +796,7 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-ink-900/70 backdrop-blur-sm"
+             class="fixed inset-0 z-50 overflow-y-auto flex items-end sm:items-center justify-center p-2 sm:p-4 bg-ink-950/40 backdrop-blur-sm"
              style="display: none;">
             <div @click.away="quickModeloOpen = false" class="relative bg-white rounded-2xl border border-ink-200 shadow-2xl max-w-sm w-full p-6 space-y-4">
                 <div class="flex items-center justify-between pb-2 border-b border-ink-100">

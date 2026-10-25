@@ -171,7 +171,7 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
+                <table class="tabla-responsiva w-full text-left text-sm">
                     <thead class="bg-ink-50 text-[10px] font-bold uppercase tracking-wider text-ink-500">
                         <tr>
                             <th class="py-3 px-6">Descripción</th>
@@ -190,22 +190,24 @@
                                     <span class="block text-[11px] font-mono text-ink-400" x-text="'S/N: ' + item.numero_serie"></span>
                                 </td>
                                 <td class="py-3 px-4">
-                                    <template x-if="item.tipo === 'lote'">
-                                        <input type="number" min="1" :max="item.disponible" required
-                                               :name="`items[${index}][cantidad]`"
-                                               x-model.number="item.cantidad"
-                                               @change="if (item.cantidad < 1) item.cantidad = 1; if (item.cantidad > item.disponible) item.cantidad = item.disponible"
-                                               class="w-20 rounded-lg bg-ink-50 border border-ink-200 px-2.5 py-1.5 text-sm text-right font-mono focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20" />
-                                    </template>
-                                    <template x-if="item.unidad === 'metros'">
-                                        <span class="text-[11px] font-semibold text-ink-500 pl-1">m</span>
-                                    </template>
-                                    <template x-if="item.tipo !== 'lote'">
-                                        <span>
-                                            <input type="hidden" :name="`items[${index}][cantidad]`" value="1">
-                                            <span class="font-mono text-ink-900 pl-2.5">1</span>
-                                        </span>
-                                    </template>
+                                    <div class="inline-flex items-center gap-1.5 whitespace-nowrap">
+                                        <template x-if="item.tipo === 'lote'">
+                                            <input type="number" min="1" :max="item.disponible" required
+                                                   :name="`items[${index}][cantidad]`"
+                                                   x-model.number="item.cantidad"
+                                                   @change="if (item.cantidad < 1) item.cantidad = 1; if (item.cantidad > item.disponible) item.cantidad = item.disponible"
+                                                   class="w-20 rounded-lg bg-ink-50 border border-ink-200 px-2.5 py-1.5 text-sm text-right font-mono focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20" />
+                                        </template>
+                                        <template x-if="item.unidad === 'metros'">
+                                            <span class="text-[11px] font-semibold text-ink-500">m</span>
+                                        </template>
+                                        <template x-if="item.tipo !== 'lote'">
+                                            <span>
+                                                <input type="hidden" :name="`items[${index}][cantidad]`" value="1">
+                                                <span class="font-mono text-ink-900 pl-2.5">1</span>
+                                            </span>
+                                        </template>
+                                    </div>
                                 </td>
                                 <td class="py-3 px-4">
                                     <div class="relative">

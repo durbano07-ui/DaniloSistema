@@ -31,10 +31,10 @@
          }">
 
         <!-- Controls: Filters and Action Buttons -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <form method="GET" action="{{ route('productos.index') }}" class="flex flex-wrap items-center gap-3">
+        <div class="flex items-start md:items-center justify-between gap-3">
+            <form method="GET" action="{{ route('productos.index') }}" class="flex flex-1 min-w-0 flex-wrap items-center gap-2 sm:gap-3">
                 <!-- Search Box -->
-                <div class="relative">
+                <div class="relative flex-1 basis-full sm:basis-auto sm:flex-none">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -48,7 +48,7 @@
                            @input.debounce.500ms="$el.form.submit()"
                            @keydown.enter.prevent="$el.form.submit()"
                            x-init="if ($el.value) { $el.focus(); $el.setSelectionRange($el.value.length, $el.value.length); }"
-                           class="pl-9 pr-3 py-2 rounded-xl bg-white border border-ink-200 text-ink-900 text-xs focus:ring-2 focus:ring-brand-600/20 focus:border-brand-600 shadow-xs w-44 sm:w-56 placeholder-ink-400" />
+                           class="pl-9 pr-3 py-2 rounded-xl bg-white border border-ink-200 text-ink-900 text-xs focus:ring-2 focus:ring-brand-600/20 focus:border-brand-600 shadow-xs w-full sm:w-56 placeholder-ink-400" />
                 </div>
 
                 <!-- Filtro Único por Categorías -->
@@ -109,7 +109,7 @@
                 @endif
             </form>
 
-            <div class="flex items-center gap-2.5 ml-auto">
+            <div class="flex items-center gap-2.5 ml-auto flex-shrink-0">
                 <!-- Botón Ingresar Productos (+) -->
                 <div class="relative group">
                     <a href="{{ route('productos.create') }}"
@@ -151,7 +151,7 @@
                 </div>
             @else
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="tabla-responsiva w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-ink-200 bg-ink-50 text-xs font-semibold uppercase tracking-wider text-ink-500">
                                 <th class="py-4 px-6">Serie / Código de Barras</th>
