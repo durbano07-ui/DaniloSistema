@@ -8,7 +8,7 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('inventario:buscar-imagenes {--limite=20 : Máximo de modelos a procesar (cada uno gasta una búsqueda de SerpApi)} {--reintentar : Incluir modelos en los que ya se buscó sin éxito}')]
+#[Signature('inventario:buscar-imagenes {--limite=20 : Máximo de modelos a procesar (cada uno gasta una búsqueda de SerpApi)} {--reintentar : Incluir modelos en los que ya se buscó sin éxito} {--todos : Incluir también modelos sin equipos registrados}')]
 #[Description('Busca en internet y guarda comprimida la imagen de los modelos que todavía no tienen una')]
 class BuscarImagenesModelos extends Command
 {
@@ -26,6 +26,7 @@ class BuscarImagenesModelos extends Command
         $modelos = Modelo::with('marca')
             ->whereNull('url_img')
             ->when(! $this->option('reintentar'), fn ($q) => $q->whereNull('imagen_buscada_at'))
+            ->when(! $this->option('todos'), fn ($q) => $q->whereHas('productos'))
             ->limit((int) $this->option('limite'))
             ->get();
 

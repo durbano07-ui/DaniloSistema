@@ -97,3 +97,12 @@ test('sin clave de SerpApi no se hace ninguna búsqueda', function () {
     Http::assertNothingSent();
     expect($this->modelo->fresh()->imagen_buscada_at)->toBeNull();
 });
+
+test('el comando solo busca imágenes de modelos que tienen equipos registrados', function () {
+    fingirSerpApi();
+
+    $this->artisan('inventario:buscar-imagenes', ['--limite' => 50])->assertSuccessful();
+
+    expect($this->modelo->fresh()->imagen_buscada_at)->toBeNull();
+    Http::assertNotSent(fn ($request) => str_contains($request->url(), 'X-100'));
+});
