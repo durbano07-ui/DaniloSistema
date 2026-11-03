@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Rutas de Escaneo de Códigos de Barras (Lector físico y cámara)
+    Route::get('/modelos/{modelo}/imagen', [ModeloController::class, 'imagen'])->name('modelos.imagen');
     Route::get('/productos/scan/{serie}', [ProductoController::class, 'scanBarcode'])->name('productos.scan');
     Route::get('/productos/check-serie/{serie}', [ProductoController::class, 'checkSerie'])->name('productos.check-serie');
 });
@@ -57,6 +58,7 @@ Route::middleware(['auth', 'can:gestionar-almacen'])->group(function () {
 
 Route::middleware(['auth', 'can:gestionar-inventario'])->group(function () {
     Route::resource('productos', ProductoController::class)->except(['show']);
+    Route::post('/categorias/recalcular-stock', [CategoriaController::class, 'recalcularStock'])->name('categorias.recalcular-stock');
     Route::resource('categorias', CategoriaController::class)->parameters(['categorias' => 'categoria'])->except(['show']);
     Route::resource('proveedores', ProveedorController::class)->parameters(['proveedores' => 'proveedor'])->except(['show', 'destroy']);
     Route::post('/marcas', [MarcaController::class, 'store'])->name('marcas.store');
@@ -64,6 +66,7 @@ Route::middleware(['auth', 'can:gestionar-inventario'])->group(function () {
     Route::delete('/marcas/{marca}', [MarcaController::class, 'destroy'])->name('marcas.destroy');
     Route::post('/modelos', [ModeloController::class, 'store'])->name('modelos.store');
     Route::put('/modelos/{modelo}', [ModeloController::class, 'update'])->name('modelos.update');
+    Route::post('/modelos/{modelo}/buscar-imagen', [ModeloController::class, 'buscarImagen'])->name('modelos.buscar-imagen');
     Route::delete('/modelos/{modelo}', [ModeloController::class, 'destroy'])->name('modelos.destroy');
 });
 

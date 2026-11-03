@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
@@ -37,7 +38,12 @@ class UpdateProductoRequest extends FormRequest
             'tipo' => ['nullable', 'string', 'in:unitario,lote'],
             'unidad' => ['nullable', 'string', 'in:unidades,metros'],
             'cantidad' => ['nullable', 'integer', 'min:1'],
-            'cantidad_disponible' => ['nullable', 'integer', 'min:0'],
+            'cantidad_disponible' => ['nullable', 'integer', 'min:0', function (string $attribute, mixed $value, Closure $fail): void {
+                $total = (int) $this->input('cantidad', $this->route('producto')?->cantidad);
+                if ((int) $value > $total) {
+                    $fail("El stock disponible no puede ser mayor que la cantidad total del lote ({$total}).");
+                }
+            }],
         ];
     }
 }

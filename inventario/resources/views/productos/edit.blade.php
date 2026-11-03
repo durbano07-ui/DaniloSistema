@@ -52,6 +52,41 @@
                 </div>
             </div>
 
+            @if ($producto->modelo)
+                <!-- Imagen del modelo (buscada automáticamente en internet) -->
+                <div class="mb-6 pb-6 border-b border-ink-100 flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div class="w-28 h-28 flex-shrink-0 rounded-xl bg-white border border-ink-200 flex items-center justify-center overflow-hidden">
+                        @if ($producto->modelo->urlImagen())
+                            <img src="{{ $producto->modelo->urlImagen() }}" alt="{{ $producto->modelo->nombre }}" class="w-full h-full object-contain" />
+                        @else
+                            <svg class="w-8 h-8 text-ink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        @endif
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-xs font-bold uppercase tracking-wider text-ink-500">Imagen del modelo {{ $producto->modelo->nombre }}</p>
+                        <p class="text-xs text-ink-500">Se busca automáticamente en internet y se comparte entre todos los equipos de este modelo.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <form method="POST" action="{{ route('modelos.buscar-imagen', $producto->modelo) }}">
+                                @csrf
+                                <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-ink-50 hover:bg-ink-100 border border-ink-200 text-[11px] font-bold text-ink-700 hover:text-brand-600 transition-all cursor-pointer">
+                                    {{ $producto->modelo->url_img ? 'Volver a buscar' : 'Buscar imagen' }}
+                                </button>
+                            </form>
+                            @if ($producto->modelo->url_img)
+                                <form method="POST" action="{{ route('modelos.buscar-imagen', $producto->modelo) }}">
+                                    @csrf
+                                    <input type="hidden" name="siguiente" value="1" />
+                                    <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-ink-50 hover:bg-ink-100 border border-ink-200 text-[11px] font-bold text-ink-700 hover:text-brand-600 transition-all cursor-pointer"
+                                            title="Usa el siguiente resultado de la búsqueda si esta imagen no corresponde al equipo">
+                                        Probar otra imagen
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('productos.update', $producto) }}" class="space-y-6">
                 @csrf
                 @method('PUT')

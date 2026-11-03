@@ -9,6 +9,7 @@ use App\Models\Categoria;
 use App\Models\Consumo;
 use App\Models\Producto;
 use App\Models\Proveedor;
+use App\Support\ImagenModelo;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -90,7 +91,8 @@ class ProductoController extends Controller
             $data['unidad'] = 'unidades';
         }
 
-        Producto::create($data);
+        $producto = Producto::create($data);
+        ImagenModelo::buscarSiFalta($producto->modelo);
 
         return redirect()->route('productos.index')->with('status', ($data['tipo'] === 'lote' ? 'Lote de '.Producto::formatearCantidad($data['cantidad'], $data['unidad']).' registrado exitosamente en el inventario.' : 'Producto registrado exitosamente en el inventario.'));
     }
@@ -119,6 +121,7 @@ class ProductoController extends Controller
         }
 
         $producto->update($data);
+        ImagenModelo::buscarSiFalta($producto->fresh()->modelo);
 
         return redirect()->route('productos.index')->with('status', 'Producto actualizado exitosamente.');
     }

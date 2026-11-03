@@ -2,6 +2,15 @@
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <h1 class="text-xl font-semibold text-ink-950 tracking-tight">Categorías de Inventario</h1>
+            <form method="POST" action="{{ route('categorias.recalcular-stock') }}" class="ml-auto">
+                @csrf
+                <button type="submit"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-ink-50 border border-ink-200 hover:border-brand-600 text-[11px] font-bold text-ink-500 hover:text-brand-600 transition-all cursor-pointer"
+                        title="Vuelve a contar el stock de cada categoría a partir de los productos disponibles">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span>Recalcular stock</span>
+                </button>
+            </form>
         </div>
     </x-slot>
 

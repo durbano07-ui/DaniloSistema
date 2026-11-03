@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categoria;
-use App\Models\Marca;
-use App\Models\Modelo;
 use App\Http\Requests\StoreCategoriaRequest;
 use App\Http\Requests\UpdateCategoriaRequest;
-use Illuminate\View\View;
+use App\Models\Categoria;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CategoriaController extends Controller
 {
@@ -18,13 +16,25 @@ class CategoriaController extends Controller
     public function index(): View
     {
         $categorias = Categoria::with([
-            'marcas' => fn($q) => $q->with(['modelos', 'productos'])->withCount('modelos'),
+            'marcas' => fn ($q) => $q->with(['modelos', 'productos'])->withCount('modelos'),
         ])
-        ->withCount('productos')
-        ->orderBy('nombre')
-        ->get();
+            ->withCount('productos')
+            ->orderBy('nombre')
+            ->get();
 
         return view('categorias.index', compact('categorias'));
+    }
+
+    /**
+     * Recalcula el stock de todas las categorías contando los productos disponibles.
+     */
+    public function recalcularStock(): RedirectResponse
+    {
+        $corregidas = Categoria::recalcularStock();
+
+        return redirect()->route('categorias.index')->with('status', $corregidas > 0
+            ? "Stock recalculado: se corrigieron {$corregidas} categoría(s)."
+            : 'Stock recalculado: todas las categorías ya estaban cuadradas.');
     }
 
     /**

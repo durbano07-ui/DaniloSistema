@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('modelos', function (Blueprint $table) {
+            $table->string('url_img')->nullable()->after('nombre');
+            $table->unsignedTinyInteger('imagen_indice')->nullable()->after('url_img');
+            $table->timestamp('imagen_buscada_at')->nullable()->after('imagen_indice');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('modelos', function (Blueprint $table) {
+            $table->dropColumn(['url_img', 'imagen_indice', 'imagen_buscada_at']);
+        });
+    }
+};

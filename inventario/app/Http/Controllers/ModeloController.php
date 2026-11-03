@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Modelo;
 use App\Models\Marca;
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Modelo;
+use App\Support\ImagenModelo;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ModeloController extends Controller
 {
@@ -35,6 +38,7 @@ class ModeloController extends Controller
                     'message' => 'Ya existe un modelo con este nombre para la marca seleccionada.',
                 ], 422);
             }
+
             return back()->with('error', 'Ya existe un modelo con ese nombre para la marca seleccionada.');
         }
 
@@ -43,6 +47,8 @@ class ModeloController extends Controller
             'id_marca' => $validated['id_marca'],
             'nombre' => $nombre,
         ]);
+
+        ImagenModelo::buscarSiFalta($modelo);
 
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
@@ -78,6 +84,7 @@ class ModeloController extends Controller
                     'message' => 'Ya existe otro modelo con este nombre para esta marca.',
                 ], 422);
             }
+
             return back()->with('error', 'Ya existe otro modelo con ese nombre para esta marca.');
         }
 
@@ -101,6 +108,7 @@ class ModeloController extends Controller
     {
         if ($modelo->productos()->exists()) {
             $msg = 'No se puede eliminar el modelo porque tiene productos registrados en inventario.';
+
             return request()->wantsJson() || request()->ajax()
                 ? response()->json(['success' => false, 'message' => $msg], 422)
                 : back()->with('error', $msg);
@@ -116,5 +124,34 @@ class ModeloController extends Controller
         }
 
         return back()->with('status', 'Modelo eliminado exitosamente.');
+    }
+
+    /**
+     * Sirve la imagen comprimida del modelo.
+     */
+    public function imagen(Modelo $modelo): StreamedResponse
+    {
+        abort_unless($modelo->url_img && Storage::disk('local')->exists($modelo->url_img), 404);
+
+        return Storage::disk('local')->response($modelo->url_img, null, [
+            'Content-Type' => 'image/webp',
+            'Cache-Control' => 'private, max-age=2592000, immutable',
+        ]);
+    }
+
+    /**
+     * Busca en internet la imagen del modelo. Con "siguiente" prueba el resultado después del actual.
+     */
+    public function buscarImagen(Request $request, Modelo $modelo): RedirectResponse
+    {
+        if (! ImagenModelo::disponible()) {
+            return back()->with('error', 'La búsqueda de imágenes no está configurada (falta SERPAPI_KEY en el servidor).');
+        }
+
+        $desde = $request->boolean('siguiente') && $modelo->imagen_indice !== null ? $modelo->imagen_indice + 1 : 0;
+
+        return ImagenModelo::buscar($modelo, $desde)
+            ? back()->with('status', "Imagen del modelo {$modelo->nombre} actualizada.")
+            : back()->with('error', "No se encontró una imagen válida para el modelo {$modelo->nombre}.");
     }
 }

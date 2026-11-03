@@ -171,6 +171,11 @@
                                     </td>
 
                                     <td class="py-4 px-6">
+                                        <div class="flex items-center gap-3">
+                                        @if ($producto->modelo?->urlImagen())
+                                            <img src="{{ $producto->modelo->urlImagen() }}" alt="" loading="lazy" class="w-10 h-10 flex-shrink-0 rounded-lg bg-white border border-ink-200 object-contain" />
+                                        @endif
+                                        <div>
                                         <p class="font-semibold text-ink-900 group-hover:text-brand-600 transition-colors">{{ $producto->nombre }}</p>
                                         @if(($producto->tipo ?? 'unitario') === 'lote')
                                             <span class="inline-flex items-center gap-1 mt-1 text-[11px] font-semibold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-md border border-brand-200/60"
@@ -179,6 +184,8 @@
                                                 <span class="text-[10px] text-ink-500 font-mono">/ {{ $producto->cantidad }}</span>
                                             </span>
                                         @endif
+                                        </div>
+                                        </div>
                                     </td>
 
                                     <td class="py-4 px-6 whitespace-nowrap">
