@@ -68,7 +68,7 @@
 
                     <!-- Número de cédula -->
                     <div>
-                        <label for="numero_cedula" class="block text-[13px] font-medium text-ink-700 mb-1.5">Número de cédula</label>
+                        <label for="numero_cedula" class="block text-[13px] font-medium text-ink-700 mb-1.5">Cédula o código de usuario</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-400">
                                 <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
@@ -81,7 +81,6 @@
                                    name="numero_cedula"
                                    value="{{ old('numero_cedula') }}"
                                    placeholder="0500000001"
-                                   inputmode="numeric"
                                    required
                                    autofocus
                                    autocomplete="username" />

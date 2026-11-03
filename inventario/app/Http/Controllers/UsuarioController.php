@@ -43,6 +43,7 @@ class UsuarioController extends Controller
         $data = $request->validated();
         $generada = ! $request->filled('password');
         $data['password'] = $generada ? self::generarPassword() : $request->password;
+        $data['numero_cedula'] ??= Usuario::siguienteCodigoSinCedula();
 
         $usuario = Usuario::create($data);
 

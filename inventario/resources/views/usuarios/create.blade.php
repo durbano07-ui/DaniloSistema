@@ -23,7 +23,7 @@
                 <!-- Número de Cédula -->
                 <div>
                     <label for="numero_cedula" class="block text-xs font-bold uppercase tracking-wider text-ink-500 mb-1.5">
-                        Número de Cédula <span class="text-rose-500">*</span>
+                        Número de Cédula <span class="text-ink-400 normal-case font-medium tracking-normal">(opcional)</span>
                     </label>
                     <input id="numero_cedula"
                            type="text"
@@ -31,9 +31,8 @@
                            value="{{ old('numero_cedula') }}"
                            maxlength="10"
                            placeholder="Ej. 1710034065"
-                           required
                            class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 placeholder-ink-400 focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 font-mono text-sm transition-all" />
-                    <p class="mt-1 text-xs text-ink-500">Debe contener exactamente 10 dígitos numéricos.</p>
+                    <p class="mt-1 text-xs text-ink-500">10 dígitos. Si la persona no tiene cédula, déjalo vacío y el sistema le asignará un código de usuario (ej. P000001) para iniciar sesión.</p>
                     @error('numero_cedula')
                         <p class="mt-1.5 text-xs text-rose-600 font-medium flex items-center gap-1">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>

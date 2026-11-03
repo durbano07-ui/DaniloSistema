@@ -27,7 +27,8 @@ class StoreUsuarioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'numero_cedula' => ['required', 'string', 'size:10', 'unique:usuarios,numero_cedula', new CedulaEcuatoriana],
+            // Opcional: si se deja vacía, el sistema asigna un código de usuario
+            'numero_cedula' => ['nullable', 'string', 'size:10', 'unique:usuarios,numero_cedula', new CedulaEcuatoriana],
             'nombre' => ['required', 'string', 'max:30'],
             'id_rol' => ['required', Rule::in(Rol::asignablesPor($this->user())->pluck('id_rol'))],
             // Si se deja vacía, el sistema genera una contraseña automáticamente

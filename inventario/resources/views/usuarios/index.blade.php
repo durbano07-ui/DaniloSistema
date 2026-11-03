@@ -16,7 +16,7 @@
                         <p class="text-sm font-semibold text-ink-950">Credenciales de acceso de {{ $cred['nombre'] }}</p>
                         <p class="text-xs text-ink-500 mt-0.5">Entrégalas al usuario. Por seguridad, la contraseña no se volverá a mostrar.</p>
                         <div x-ref="datos" class="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
-                            <span class="text-ink-500">Cédula:</span>
+                            <span class="text-ink-500">Usuario:</span>
                             <span class="font-mono font-semibold text-ink-900">{{ $cred['cedula'] }}</span>
                             <span class="text-ink-500">Contraseña:</span>
                             <span class="font-mono font-semibold text-brand-600 tracking-wide">{{ $cred['password'] }}</span>
@@ -101,6 +101,9 @@
                                     <!-- Cédula -->
                                     <td class="py-4 px-6 font-mono text-ink-500 text-xs">
                                         {{ $usuario->numero_cedula }}
+                                        @unless ($usuario->tieneCedula())
+                                            <span class="block font-sans text-[11px] text-ink-400">Sin cédula</span>
+                                        @endunless
                                     </td>
 
                                     <!-- Rol -->

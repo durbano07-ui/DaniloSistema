@@ -27,6 +27,36 @@ test('el almacenista puede registrar un técnico', function () {
     expect(Usuario::find('1710034065')?->tieneRol('Tecnico'))->toBeTrue();
 });
 
+test('se puede registrar personal sin cédula y recibe un código de usuario para iniciar sesión', function () {
+    $rolTecnico = Rol::where('nombre', 'Tecnico')->firstOrFail();
+
+    $this->actingAs($this->almacenista)
+        ->post(route('usuarios.store'), ['nombre' => 'Sin Cédula Uno', 'id_rol' => $rolTecnico->id_rol])
+        ->assertRedirect(route('usuarios.index'))
+        ->assertSessionHas('credenciales.cedula', 'P000001');
+
+    $this->actingAs($this->almacenista)
+        ->post(route('usuarios.store'), ['nombre' => 'Sin Cédula Dos', 'id_rol' => $rolTecnico->id_rol, 'password' => 'secreta123'])
+        ->assertRedirect(route('usuarios.index'));
+
+    $segundo = Usuario::findOrFail('P000002');
+    expect($segundo->nombre)->toBe('Sin Cédula Dos')
+        ->and($segundo->tieneCedula())->toBeFalse();
+
+    auth()->logout();
+
+    $this->post(route('login'), ['numero_cedula' => 'P000002', 'password' => 'secreta123']);
+    $this->assertAuthenticatedAs($segundo);
+});
+
+test('una cédula ingresada sigue validándose', function () {
+    $rolTecnico = Rol::where('nombre', 'Tecnico')->firstOrFail();
+
+    $this->actingAs($this->almacenista)
+        ->post(route('usuarios.store'), ['numero_cedula' => '1234567890', 'nombre' => 'Cédula Mala', 'id_rol' => $rolTecnico->id_rol])
+        ->assertSessionHasErrors('numero_cedula');
+});
+
 test('el almacenista no puede registrar administradores ni almacenistas', function () {
     $rolAdmin = Rol::where('nombre', 'Administrador')->firstOrFail();
 
