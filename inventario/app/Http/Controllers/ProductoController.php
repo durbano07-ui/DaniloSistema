@@ -9,11 +9,13 @@ use App\Models\Categoria;
 use App\Models\Consumo;
 use App\Models\Producto;
 use App\Models\Proveedor;
+use App\Models\SerialUnidad;
 use App\Support\ImagenModelo;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ProductoController extends Controller
@@ -91,8 +93,19 @@ class ProductoController extends Controller
             $data['unidad'] = 'unidades';
         }
 
-        $producto = Producto::create($data);
-        ImagenModelo::buscarSiFalta($producto->modelo);
+        $series = $data['tipo'] === 'unitario' && ! empty($data['numeros_serie'])
+            ? $data['numeros_serie']
+            : [$data['numero_serie']];
+        unset($data['numeros_serie']);
+
+        $productos = DB::transaction(fn () => collect($series)
+            ->map(fn (string $serie) => Producto::create(array_merge($data, ['numero_serie' => $serie]))));
+
+        ImagenModelo::buscarSiFalta($productos->first()->modelo);
+
+        if ($productos->count() > 1) {
+            return redirect()->route('productos.index')->with('status', $productos->count().' equipos registrados exitosamente en el inventario.');
+        }
 
         return redirect()->route('productos.index')->with('status', ($data['tipo'] === 'lote' ? 'Lote de '.Producto::formatearCantidad($data['cantidad'], $data['unidad']).' registrado exitosamente en el inventario.' : 'Producto registrado exitosamente en el inventario.'));
     }
@@ -150,6 +163,18 @@ class ProductoController extends Controller
             ->where('numero_serie', $serie)
             ->first();
 
+        // El código de una unidad de lote (LOTE-01, ...) se resuelve a su lote
+        $serialUnidad = null;
+        if (! $producto) {
+            $serialUnidad = SerialUnidad::where('serial', $serie)->first();
+            if ($serialUnidad) {
+                $serie = $serialUnidad->numero_serie;
+                $producto = Producto::with(['categoria', 'marca', 'modelo', 'almacen.direccion.ciudad', 'proveedor'])
+                    ->where('numero_serie', $serie)
+                    ->first();
+            }
+        }
+
         if (! $producto) {
             return response()->json([
                 'encontrado' => false,
@@ -165,6 +190,7 @@ class ProductoController extends Controller
         return response()->json([
             'encontrado' => true,
             'es_disponible' => ($producto->estado === 'disponible'),
+            'serial_unidad' => $serialUnidad?->serial,
             'producto' => [
                 'numero_serie' => $producto->numero_serie,
                 'nombre' => $producto->nombre,
@@ -200,6 +226,14 @@ class ProductoController extends Controller
     {
         $serie = trim($serie);
         $producto = Producto::where('numero_serie', $serie)->first();
+
+        $serialUnidad = $producto ? null : SerialUnidad::with('producto')->where('serial', $serie)->first();
+        if ($serialUnidad) {
+            return response()->json([
+                'existe' => true,
+                'mensaje' => "La serie '{$serie}' ya es el código de una unidad del lote {$serialUnidad->numero_serie} ({$serialUnidad->producto?->nombre}).",
+            ]);
+        }
 
         if ($producto) {
             return response()->json([

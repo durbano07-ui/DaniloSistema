@@ -26,6 +26,22 @@
              // TABLA ACUMULATIVA DE EQUIPOS PARA SALIDA / PEDIDO
              items: [],
 
+             // Catálogo para el selector manual (solo nombre, modelo y serie)
+             catalogo: @js($productosDisponibles->map(fn ($p) => [
+                 'serie' => $p->numero_serie,
+                 'nombre' => $p->nombre,
+                 'modelo' => $p->modelo?->nombre,
+             ])->values()),
+
+             // Equipos del catálogo que aún no están en el pedido
+             get catalogoRestante() {
+                 const enPedido = new Set(this.items.map(i => i.numero_serie));
+                 return this.catalogo.filter(p => !enPedido.has(p.serie));
+             },
+             etiquetaCatalogo(p) {
+                 return [p.nombre, p.modelo, 'S/N: ' + p.serie].filter(Boolean).join(' • ');
+             },
+
              init() {
                  this.$nextTick(() => {
                      this.focusScanner();
@@ -342,18 +358,19 @@
         <div x-show="manualMode" x-transition class="p-6 rounded-2xl bg-white border border-ink-200 space-y-3 shadow-card">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-bold text-ink-500 uppercase tracking-wider">Añadir Manualmente desde el Catálogo</span>
-                <span class="text-xs text-ink-400 font-medium">{{ $productosDisponibles->count() }} equipos disponibles</span>
+                <span class="text-xs text-ink-400 font-medium"
+                      x-text="catalogoRestante.length + (catalogoRestante.length === 1 ? ' equipo disponible' : ' equipos disponibles')">{{ $productosDisponibles->count() }} equipos disponibles</span>
             </div>
             <select x-model="selectedManualSerie"
                     @change="if (selectedManualSerie) { lookupAndAdd(selectedManualSerie); selectedManualSerie = ''; }"
-                    class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 text-sm focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 cursor-pointer">
-                <option value="">-- Elige un equipo para añadirlo a la tabla del pedido --</option>
-                @foreach ($productosDisponibles as $prod)
-                    <option value="{{ $prod->numero_serie }}">
-                        [{{ $prod->numero_serie }}] {{ $prod->nombre }} &bull; {{ $prod->marca?->nombre ?? '' }} {{ $prod->modelo?->nombre ?? '' }} &bull; {{ ($prod->tipo ?? 'unitario') === 'lote' ? 'Lote (' . $prod->cantidad_disponible . ($prod->esMetros() ? ' m' : '') . ' disp.)' : '1 unidad' }} &bull; Bodega: {{ $prod->almacen?->nombre }}
-                    </option>
-                @endforeach
+                    :disabled="catalogoRestante.length === 0"
+                    class="w-full rounded-xl bg-ink-50 border border-ink-200 px-4 py-2.5 text-ink-900 text-sm focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 cursor-pointer disabled:cursor-not-allowed disabled:text-ink-400">
+                <option value="" x-text="catalogoRestante.length ? '-- Elige un equipo para añadirlo a la tabla del pedido --' : 'Todos los equipos disponibles ya están en el pedido'">-- Elige un equipo para añadirlo a la tabla del pedido --</option>
+                <template x-for="p in catalogoRestante" :key="p.serie">
+                    <option :value="p.serie" x-text="etiquetaCatalogo(p)"></option>
+                </template>
             </select>
+            <p class="text-[11px] text-ink-400">Los equipos que ya agregaste al pedido no aparecen en esta lista. Si quitas uno de la tabla, vuelve a aparecer.</p>
         </div>
 
         <!-- FORMULARIO DE SALIDA CON TABLA ACUMULATIVA -->

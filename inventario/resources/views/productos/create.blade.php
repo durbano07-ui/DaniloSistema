@@ -19,10 +19,15 @@
              tipo: '{{ old('tipo', 'unitario') }}',
              cantidad: {{ old('cantidad', 1) }},
              unidad: '{{ old('unidad', 'unidades') === 'metros' ? 'metros' : 'unidades' }}',
-             serie: '{{ old('numero_serie') }}',
+             serie: '{{ old('tipo', 'unitario') === 'lote' ? old('numero_serie') : '' }}',
              isChecking: false,
              checkStatus: null,
              checkMessage: null,
+
+             // Series escaneadas (modo individual: un QR puede traer varias series)
+             series: @js(collect(old('numeros_serie', []))->filter()->values()->map(fn ($valor) => ['valor' => $valor, 'estado' => 'verificando', 'mensaje' => ''])),
+             rafagaTimer: null,
+             avisoLista: '',
 
              // Catálogo
              categorias: @js($categorias),
@@ -47,7 +52,139 @@
                  this.$nextTick(() => {
                      if (this.$refs.serieInput) this.$refs.serieInput.focus();
                      if (this.serie) this.renderBarcode();
+                     this.series.forEach(item => this.verificarItem(item));
                  });
+             },
+
+             get seriesConError() {
+                 return this.series.filter(item => item.estado === 'error').length;
+             },
+
+             get seriesValidas() {
+                 return this.series.filter(item => item.estado === 'ok').length;
+             },
+
+             get codigoPrincipal() {
+                 if (this.tipo === 'lote') return this.serie.trim();
+                 return this.series.length === 1 ? this.series[0].valor : '';
+             },
+
+             separarSeries(texto) {
+                 return texto.split(/[\s,;|]+/).map(v => v.trim()).filter(v => v.length > 0);
+             },
+
+             // Pasa lo escrito/escaneado en el campo a la lista de series
+             agregarDesdeInput() {
+                 const valores = this.separarSeries(this.serie);
+                 this.serie = '';
+                 let repetidas = 0;
+                 const verificaciones = [];
+                 for (const valor of valores) {
+                     if (valor.length > 50) {
+                         this.series.push({ valor, estado: 'error', mensaje: 'Supera los 50 caracteres permitidos.' });
+                         continue;
+                     }
+                     if (this.series.some(item => item.valor === valor)) {
+                         repetidas++;
+                         continue;
+                     }
+                     const item = { valor, estado: 'verificando', mensaje: '' };
+                     this.series.push(item);
+                     verificaciones.push(this.verificarItem(this.series[this.series.length - 1]));
+                 }
+                 this.avisoLista = repetidas > 0 ? `${repetidas} serie(s) ya estaban en la lista y se omitieron.` : '';
+                 this.renderBarcode();
+                 Promise.all(verificaciones).then(estados => {
+                     if (repetidas > 0 || estados.includes('error')) {
+                         window.playScannerBeep('error');
+                     } else if (estados.length > 0) {
+                         window.playScannerBeep('success');
+                     }
+                 });
+             },
+
+             async verificarItem(item) {
+                 item.estado = 'verificando';
+                 try {
+                     const res = await fetch(`/productos/check-serie/${encodeURIComponent(item.valor)}`);
+                     const data = await res.json();
+                     if (data.existe) {
+                         item.estado = 'error';
+                         item.mensaje = data.mensaje;
+                     } else {
+                         item.estado = 'ok';
+                         item.mensaje = '';
+                     }
+                 } catch (e) {
+                     item.estado = 'error';
+                     item.mensaje = 'No se pudo verificar la serie.';
+                 }
+                 return item.estado;
+             },
+
+             quitarSerie(index) {
+                 this.series.splice(index, 1);
+                 this.renderBarcode();
+             },
+
+             quitarSeriesConError() {
+                 this.series = this.series.filter(item => item.estado !== 'error');
+                 this.renderBarcode();
+             },
+
+             limpiarSeries() {
+                 this.series = [];
+                 this.avisoLista = '';
+                 if (this.$refs.serieInput) this.$refs.serieInput.focus();
+             },
+
+             // El lector teclea cada serie del QR seguida de Enter: se agrupan en una ráfaga.
+             onSerieEnter() {
+                 if (this.tipo === 'lote') {
+                     this.handleSerieEnter();
+                     return;
+                 }
+                 this.agregarDesdeInput();
+                 clearTimeout(this.rafagaTimer);
+                 this.rafagaTimer = setTimeout(() => this.finRafaga(), 400);
+             },
+
+             onSerieKeydown(e) {
+                 if (this.tipo !== 'lote' && this.rafagaTimer && e.key !== 'Enter') {
+                     clearTimeout(this.rafagaTimer);
+                     this.rafagaTimer = null;
+                 }
+             },
+
+             async finRafaga() {
+                 this.rafagaTimer = null;
+                 if (this.series.length !== 1 || this.serie.trim()) return;
+                 const unico = this.series[0];
+                 while (unico.estado === 'verificando') {
+                     await new Promise(r => setTimeout(r, 100));
+                 }
+                 if (unico.estado === 'ok' && this.series.length === 1) {
+                     this.seccion = 2;
+                     this.$nextTick(() => {
+                         if (this.$refs.nombreInput) this.$refs.nombreInput.focus();
+                     });
+                 }
+             },
+
+             validarSeriesAntesDeEnviar(e) {
+                 if (this.tipo === 'lote') return;
+                 if (this.serie.trim()) this.agregarDesdeInput();
+                 if (this.series.length === 0) {
+                     e.preventDefault();
+                     this.seccion = 1;
+                     this.$nextTick(() => this.$refs.serieInput && this.$refs.serieInput.focus());
+                     return;
+                 }
+                 if (this.seriesConError > 0 || this.series.some(item => item.estado === 'verificando')) {
+                     e.preventDefault();
+                     this.seccion = 1;
+                     alert('Hay series ya registradas o pendientes de verificar. Quítalas de la lista antes de registrar.');
+                 }
              },
 
              get marcasDisponibles() {
@@ -94,6 +231,18 @@
              },
 
              avanzarASeccion2() {
+                 if (this.tipo !== 'lote') {
+                     if (this.serie.trim()) this.agregarDesdeInput();
+                     if (this.series.length === 0) {
+                         if (this.$refs.serieInput) this.$refs.serieInput.focus();
+                         return;
+                     }
+                     this.seccion = 2;
+                     this.$nextTick(() => {
+                         if (this.$refs.nombreInput) this.$refs.nombreInput.focus();
+                     });
+                     return;
+                 }
                  if (!this.serie.trim()) {
                      if (this.$refs.serieInput) this.$refs.serieInput.focus();
                      return;
@@ -247,9 +396,9 @@
              },
              renderBarcode() {
                  this.$nextTick(() => {
-                     if (window.JsBarcode && this.$refs.barcodeSvg && this.serie.trim()) {
+                     if (window.JsBarcode && this.$refs.barcodeSvg && this.codigoPrincipal) {
                          try {
-                             window.JsBarcode(this.$refs.barcodeSvg, this.serie.trim(), {
+                             window.JsBarcode(this.$refs.barcodeSvg, this.codigoPrincipal, {
                                  format: 'CODE128',
                                  lineColor: '#171717',
                                  width: 2,
@@ -267,7 +416,7 @@
              }
          }">
 
-        <form method="POST" action="{{ route('productos.store') }}" class="space-y-5">
+        <form method="POST" action="{{ route('productos.store') }}" class="space-y-5" @submit="validarSeriesAntesDeEnviar($event)">
             @csrf
 
             <!-- NAVEGACIÓN ENTRE SECCIONES (TABS / PASOS) -->
@@ -403,7 +552,8 @@
                             <span x-text="tipo === 'lote' ? 'Código de Lote / Código de Barras *' : 'Número de Serie / Código de Barras *'"></span>
                         </label>
                         <span class="text-[11px] text-ink-500">
-                            Presiona <strong>Enter</strong> o <strong>Verificar</strong> tras escanear
+                            <span x-show="tipo === 'lote'">Presiona <strong>Enter</strong> o <strong>Verificar</strong> tras escanear</span>
+                            <span x-show="tipo !== 'lote'">Escanea uno o varios códigos (un QR con varias series se agrega completo)</span>
                         </span>
                     </div>
 
@@ -416,34 +566,80 @@
 
                         <input id="numero_serie"
                                type="text"
-                               name="numero_serie"
+                               :name="tipo === 'lote' ? 'numero_serie' : null"
                                x-ref="serieInput"
                                x-model="serie"
-                               @keydown.enter.prevent="handleSerieEnter()"
-                               @blur="checkSerie()"
+                               @keydown="onSerieKeydown($event)"
+                               @keydown.enter.prevent="onSerieEnter()"
+                               @paste="if (tipo !== 'lote') { $event.preventDefault(); serie += $event.clipboardData.getData('text'); agregarDesdeInput(); }"
+                               @blur="tipo === 'lote' && checkSerie()"
                                placeholder="Escanea el código con el lector o ingresa la serie..."
-                               required
-                               maxlength="50"
+                               :required="tipo === 'lote'"
+                               :maxlength="tipo === 'lote' ? 50 : null"
                                autocomplete="off"
                                class="w-full pl-11 pr-24 py-2.5 rounded-xl bg-ink-50 border border-ink-200 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-ink-900 placeholder-ink-400 font-mono text-sm transition-all" />
 
                         <div class="absolute inset-y-0 right-2 flex items-center">
                             <button type="button"
-                                    @click="handleSerieEnter()"
+                                    @click="tipo === 'lote' ? handleSerieEnter() : agregarDesdeInput()"
                                     class="px-3.5 py-1.5 rounded-xl bg-ink-900 hover:bg-ink-700 text-white text-xs font-semibold cursor-pointer transition-all">
-                                Verificar
+                                <span x-text="tipo === 'lote' ? 'Verificar' : 'Agregar'"></span>
                             </button>
                         </div>
                     </div>
 
+                    <!-- Lista de series escaneadas (modo individual) -->
+                    <div x-show="tipo !== 'lote' && series.length > 0" x-cloak x-transition class="rounded-xl border border-ink-200 overflow-hidden">
+                        <div class="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-ink-50 border-b border-ink-200">
+                            <div class="text-xs font-bold text-ink-900">
+                                <span x-text="series.length"></span>
+                                <span x-text="series.length === 1 ? 'serie escaneada' : 'series escaneadas'"></span>
+                                <span class="ml-1 font-semibold text-emerald-700" x-show="seriesValidas > 0" x-text="'· ' + seriesValidas + ' libres'"></span>
+                                <span class="ml-1 font-semibold text-rose-600" x-show="seriesConError > 0" x-text="'· ' + seriesConError + ' con problema'"></span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button type="button" x-show="seriesConError > 0" @click="quitarSeriesConError()"
+                                        class="text-[11px] font-bold text-rose-600 hover:underline cursor-pointer">
+                                    Quitar las que tienen problema
+                                </button>
+                                <button type="button" @click="limpiarSeries()"
+                                        class="text-[11px] font-bold text-ink-500 hover:text-ink-900 hover:underline cursor-pointer">
+                                    Vaciar lista
+                                </button>
+                            </div>
+                        </div>
+                        <ul class="max-h-72 overflow-y-auto divide-y divide-ink-100">
+                            <template x-for="(item, index) in series" :key="item.valor">
+                                <li class="flex items-start gap-3 px-4 py-2">
+                                    <span class="w-6 text-right text-[11px] text-ink-400 font-mono pt-0.5" x-text="index + 1"></span>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="font-mono text-sm font-semibold break-all"
+                                             :class="item.estado === 'error' ? 'text-rose-600 line-through' : 'text-ink-900'"
+                                             x-text="item.valor"></div>
+                                        <div x-show="item.mensaje" class="text-[11px] text-rose-600" x-text="item.mensaje"></div>
+                                    </div>
+                                    <span class="text-[11px] font-semibold whitespace-nowrap pt-0.5"
+                                          :class="{ 'text-emerald-700': item.estado === 'ok', 'text-rose-600': item.estado === 'error', 'text-ink-400': item.estado === 'verificando' }"
+                                          x-text="item.estado === 'ok' ? 'Libre' : (item.estado === 'error' ? 'No disponible' : 'Verificando…')"></span>
+                                    <button type="button" @click="quitarSerie(index)" title="Quitar de la lista"
+                                            class="p-1 rounded-lg text-ink-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                    <input type="hidden" name="numeros_serie[]" :value="item.valor" :disabled="tipo === 'lote'" />
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <p x-show="tipo !== 'lote' && avisoLista" x-text="avisoLista" class="text-xs font-medium text-amber-700"></p>
+
                     <!-- Mensaje de verificación -->
-                    <div x-show="checkMessage" x-transition class="text-xs font-medium"
+                    <div x-show="tipo === 'lote' && checkMessage" x-transition class="text-xs font-medium"
                          :class="checkStatus === 'error' ? 'text-rose-600' : 'text-emerald-700'">
                         <span x-text="checkMessage"></span>
                     </div>
 
                     <!-- Previsualización de Código de Barras SVG con JsBarcode -->
-                    <div x-show="serie.trim().length > 0 && checkStatus !== 'error'" x-transition class="pt-3 border-t border-ink-100 flex items-center justify-between">
+                    <div x-show="codigoPrincipal.length > 0 && (tipo !== 'lote' || checkStatus !== 'error')" x-transition class="pt-3 border-t border-ink-100 flex items-center justify-between">
                         <span class="text-[11px] text-ink-500 font-medium">Etiqueta de código de barras generada:</span>
                         <div class="bg-ink-50 px-3 py-1.5 rounded-xl border border-ink-200">
                             <svg x-ref="barcodeSvg"></svg>
@@ -456,6 +652,9 @@
                             {{ $message }}
                         </p>
                     @enderror
+                    @foreach (array_unique(array_merge($errors->get('numeros_serie'), ...array_values($errors->get('numeros_serie.*')))) as $mensajeSerie)
+                        <p class="mt-1 text-xs text-rose-600 font-medium">{{ $mensajeSerie }}</p>
+                    @endforeach
                 </div>
 
                 <!-- Botón de avance para Sección 1 -->
@@ -711,11 +910,12 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <span>Serie / Código:</span>
-                        <span class="font-mono font-bold text-brand-600" x-text="serie.trim() || 'No asignada'"></span>
+                        <span class="font-mono font-bold text-brand-600 truncate max-w-[280px]"
+                              x-text="tipo === 'lote' ? (serie.trim() || 'No asignada') : (series.length === 0 ? 'No asignada' : (series.length === 1 ? series[0].valor : series.length + ' series escaneadas'))"></span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span>Modalidad:</span>
-                        <span class="font-semibold text-ink-900" x-text="tipo === 'lote' ? ('Lote (' + cantidad + (unidad === 'metros' ? ' m' : ' unidades') + ')') : 'Equipo Individual (1 unidad)'"></span>
+                        <span class="font-semibold text-ink-900" x-text="tipo === 'lote' ? ('Lote (' + cantidad + (unidad === 'metros' ? ' m' : ' unidades') + ')') : (series.length > 1 ? ('Equipos Individuales (' + series.length + ' unidades)') : 'Equipo Individual (1 unidad)')"></span>
                     </div>
                 </div>
 
@@ -736,7 +936,7 @@
                         </a>
                         <button type="submit"
                                 class="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-brand-600 cursor-pointer">
-                            Registrar Entrada de Equipo
+                            <span x-text="tipo !== 'lote' && series.length > 1 ? ('Registrar ' + series.length + ' Equipos') : 'Registrar Entrada de Equipo'"></span>
                         </button>
                     </div>
                 </div>
