@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\SerialUnidadController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +59,8 @@ Route::middleware(['auth', 'can:gestionar-almacen'])->group(function () {
 
 Route::middleware(['auth', 'can:gestionar-inventario'])->group(function () {
     Route::resource('productos', ProductoController::class)->except(['show']);
+    Route::get('/productos/{producto}/seriales', [SerialUnidadController::class, 'index'])->name('productos.seriales.index');
+    Route::post('/productos/{producto}/seriales', [SerialUnidadController::class, 'store'])->name('productos.seriales.store');
     Route::post('/categorias/recalcular-stock', [CategoriaController::class, 'recalcularStock'])->name('categorias.recalcular-stock');
     Route::resource('categorias', CategoriaController::class)->parameters(['categorias' => 'categoria'])->except(['show']);
     Route::resource('proveedores', ProveedorController::class)->parameters(['proveedores' => 'proveedor'])->except(['show', 'destroy']);

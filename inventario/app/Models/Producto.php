@@ -75,6 +75,14 @@ class Producto extends Model
         return $this->hasMany(Consumo::class, 'numero_serie', 'numero_serie');
     }
 
+    /**
+     * Seriales generados para cada unidad cuando el producto es un lote.
+     */
+    public function seriales()
+    {
+        return $this->hasMany(SerialUnidad::class, 'numero_serie', 'numero_serie')->orderBy('id_serial');
+    }
+
     public function reportes()
     {
         return $this->morphToMany(Reporte::class, 'reportable', 'reportables', 'reportable_id', 'id_reporte');

@@ -10,6 +10,10 @@
              showLabel(serie, nombre, categoria, almacen, tipo = 'unitario', cantidad = 1, unidad = 'unidades') {
                  this.activeLabel = { serie, nombre, categoria, almacen, tipo, cantidad, unidad };
                  this.labelModalOpen = true;
+                 this.unidades = { cargando: false, generando: false, lista: [], error: '' };
+                 if (tipo === 'lote' && unidad !== 'metros') {
+                     this.cargarUnidades();
+                 }
                  this.$nextTick(() => {
                      if (window.JsBarcode && this.$refs.printLabelSvg) {
                          window.JsBarcode(this.$refs.printLabelSvg, serie, {
@@ -27,6 +31,70 @@
              },
              printLabel() {
                  window.print();
+             },
+
+             // Códigos por unidad de un lote (se guardan en la BD y se vuelven a ver desde aquí)
+             unidades: { cargando: false, generando: false, lista: [], error: '' },
+             get admiteUnidades() {
+                 return this.activeLabel.tipo === 'lote' && this.activeLabel.unidad !== 'metros';
+             },
+             get unidadesFaltantes() {
+                 return Math.max(0, this.activeLabel.cantidad - this.unidades.lista.length);
+             },
+             urlUnidades() {
+                 return '{{ url('productos') }}/' + encodeURIComponent(this.activeLabel.serie) + '/seriales';
+             },
+             async cargarUnidades() {
+                 const serie = this.activeLabel.serie;
+                 this.unidades.cargando = true;
+                 try {
+                     const res = await fetch(this.urlUnidades(), { headers: { 'Accept': 'application/json' } });
+                     const data = await res.json();
+                     if (serie !== this.activeLabel.serie) return;
+                     this.unidades.lista = data.seriales || [];
+                     this.dibujarUnidades();
+                 } catch (e) {
+                     this.unidades.error = 'No se pudieron cargar los códigos por unidad.';
+                 } finally {
+                     this.unidades.cargando = false;
+                 }
+             },
+             async generarUnidades() {
+                 this.unidades.generando = true;
+                 this.unidades.error = '';
+                 try {
+                     const res = await fetch(this.urlUnidades(), {
+                         method: 'POST',
+                         headers: {
+                             'Accept': 'application/json',
+                             'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content')
+                         }
+                     });
+                     const data = await res.json();
+                     if (!res.ok) {
+                         this.unidades.error = data.mensaje || 'No se pudieron generar los códigos.';
+                         return;
+                     }
+                     this.unidades.lista = data.seriales || [];
+                     this.dibujarUnidades();
+                 } catch (e) {
+                     this.unidades.error = 'Error de conexión con el servidor.';
+                 } finally {
+                     this.unidades.generando = false;
+                 }
+             },
+             dibujarUnidades() {
+                 this.$nextTick(() => {
+                     if (!window.JsBarcode || !this.$refs.unidadesGrid) return;
+                     this.$refs.unidadesGrid.querySelectorAll('svg[data-barcode]').forEach((svg) => {
+                         try {
+                             window.JsBarcode(svg, svg.dataset.barcode, {
+                                 format: 'CODE128', lineColor: '#0A0A0A', textColor: '#0A0A0A',
+                                 width: 1.3, height: 34, displayValue: true, font: 'monospace', fontSize: 11, margin: 2
+                             });
+                         } catch (e) {}
+                     });
+                 });
              }
          }">
 
@@ -284,7 +352,8 @@
              class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-900/60 backdrop-blur-sm print:p-0 print:bg-white"
              style="display: none;">
             <div @click.away="labelModalOpen = false"
-                 class="w-full max-w-sm rounded-2xl bg-white border border-ink-200 shadow-2xl p-6 sm:p-7 space-y-4 print:border-none print:shadow-none print:p-0 print:bg-white text-ink-900">
+                 :class="unidades.lista.length ? 'max-w-2xl' : 'max-w-sm'"
+                 class="w-full max-h-[90vh] overflow-y-auto print:max-h-none print:overflow-visible rounded-2xl bg-white border border-ink-200 shadow-2xl p-6 sm:p-7 space-y-4 print:border-none print:shadow-none print:p-0 print:bg-white text-ink-900">
                 <div class="flex items-center justify-between pb-3 border-b border-ink-100 print:hidden">
                     <h3 class="text-sm font-bold text-ink-900">Etiqueta de Código de Barras</h3>
                     <button type="button" @click="labelModalOpen = false" class="text-ink-500 hover:text-ink-900">&times;</button>
@@ -310,6 +379,53 @@
                     </div>
                 </div>
 
+                <!-- Códigos por unidad del lote -->
+                <template x-if="admiteUnidades">
+                    <div class="space-y-3">
+                        <p x-show="unidades.cargando" class="text-xs text-ink-500 print:hidden">Cargando códigos por unidad…</p>
+
+                        <div x-show="!unidades.cargando && unidades.lista.length === 0" class="p-4 rounded-xl bg-brand-50 border border-brand-200 space-y-3 print:hidden">
+                            <p class="text-sm font-bold text-ink-900">
+                                ¿Desea ver un código para cada equipo?
+                            </p>
+                            <p class="text-xs text-ink-600">
+                                Se generarán <span class="font-bold" x-text="activeLabel.cantidad"></span> códigos
+                                (<span class="font-mono" x-text="activeLabel.serie + '-01'"></span>, …) y quedarán guardados para volver a verlos aquí.
+                            </p>
+                            <button type="button"
+                                    @click="generarUnidades()"
+                                    :disabled="unidades.generando"
+                                    class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-sm disabled:opacity-60 cursor-pointer">
+                                <span x-text="unidades.generando ? 'Generando…' : ('Sí, generar ' + activeLabel.cantidad + ' códigos')"></span>
+                            </button>
+                        </div>
+
+                        <div x-show="unidades.lista.length > 0" class="space-y-2">
+                            <div class="flex items-center justify-between gap-2 print:hidden">
+                                <p class="text-[11px] font-bold uppercase tracking-wider text-ink-500">
+                                    Códigos por unidad (<span x-text="unidades.lista.length"></span>)
+                                </p>
+                                <button type="button"
+                                        x-show="unidadesFaltantes > 0"
+                                        @click="generarUnidades()"
+                                        :disabled="unidades.generando"
+                                        class="text-[11px] font-bold text-brand-600 hover:underline cursor-pointer disabled:opacity-60"
+                                        x-text="'Generar ' + unidadesFaltantes + ' faltantes'"></button>
+                            </div>
+                            <div x-ref="unidadesGrid" class="grid grid-cols-2 sm:grid-cols-3 print:grid-cols-3 gap-2">
+                                <template x-for="codigo in unidades.lista" :key="codigo">
+                                    <div class="p-2 rounded-lg border border-dashed border-ink-300 text-center break-inside-avoid">
+                                        <p class="text-[10px] font-semibold text-ink-700 truncate" x-text="activeLabel.nombre"></p>
+                                        <svg :data-barcode="codigo" class="mx-auto max-w-full"></svg>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <p x-show="unidades.error" x-text="unidades.error" class="text-xs text-rose-600 font-medium print:hidden"></p>
+                    </div>
+                </template>
+
                 <div class="flex items-center justify-end gap-2 pt-2 print:hidden">
                     <button type="button" @click="labelModalOpen = false" class="px-4 py-2 rounded-xl bg-ink-50 text-ink-500 text-xs font-semibold hover:bg-ink-100">
                         Cerrar
@@ -318,7 +434,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                         </svg>
-                        <span>Imprimir Etiqueta</span>
+                        <span x-text="unidades.lista.length ? 'Imprimir Etiquetas' : 'Imprimir Etiqueta'"></span>
                     </button>
                 </div>
             </div>
